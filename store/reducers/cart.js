@@ -30,10 +30,13 @@ export default (state = INITIAL_STATE, action) => {
           productPrice
         );
       }
-      
+
       return {
         ...state,
-        [addedProduct.id]: updatedOrNewCartItem,
+        items: {
+          ...state.items,
+          [addedProduct.id]: updatedOrNewCartItem,
+        },
         totalAmount: state.totalAmount + productPrice,
       };
 

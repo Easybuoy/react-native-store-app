@@ -13,18 +13,18 @@ import Colors from "../../constants/Colors";
 const CartItem = ({ quantity, title, amount, onRemove }) => {
   return (
     <View style={styles.cardItem}>
-      <Text style={styles.itemData}>
-        <Text style={styles.quantity}>
-          {quantity} <Text style={styles.mainText}>{title}</Text>
-        </Text>
-      </Text>
+      <View style={styles.itemData}>
+        <Text style={styles.quantity}>{quantity} </Text>
+        <Text style={styles.mainText}>{title}</Text>
+      </View>
 
       <View style={styles.itemData}>
-        <Text style={styles.mainText}>{amount}</Text>
+        <Text style={styles.mainText}>${amount.toFixed(2)}</Text>
         <TouchableOpacity onPress={onRemove} style={styles.deleteButton}>
           <Ionicons
             name={Platform.OS === "android" ? "md-trash" : "ios-trash"}
             size={23}
+            color={Colors.RED}
           />
         </TouchableOpacity>
       </View>
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   mainText: {
     fontFamily: "open-sans-bold",
-    fontSize: 62,
+    fontSize: 16,
   },
   deleteButton: {
     marginLeft: 20,
