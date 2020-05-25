@@ -1,24 +1,16 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
 import { Provider } from "react-redux";
+import { NavigationContainer } from "@react-navigation/native";
 
+import { MyStack } from "./navigation/Navigator";
 import store from "./store";
 
 export default function App() {
   return (
-    <Provider store={store}>
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-      </View>
-    </Provider>
+    <NavigationContainer>
+      <Provider store={store}>
+        <MyStack />
+      </Provider>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
