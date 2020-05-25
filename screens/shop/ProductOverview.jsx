@@ -3,7 +3,7 @@ import { View, FlatList, Text, StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import { addToCart } from "../../store/actions/cart";
-import ProductItem from "../../components/ProductItem";
+import ProductItem from "../../components/shop/ProductItem";
 
 const ProductOverview = ({ navigation }) => {
   const dispatch = useDispatch();

@@ -10,7 +10,7 @@ import {
   Platform,
 } from "react-native";
 
-import Colors from "../constants/Colors";
+import Colors from "../../constants/Colors";
 
 const ProductItem = ({ image, title, price, viewDetail, addToCart }) => {
   let TouchableComponent = TouchableOpacity;
