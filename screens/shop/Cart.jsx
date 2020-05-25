@@ -37,7 +37,7 @@ const Cart = () => {
 
       <FlatList
         data={cartItems}
-        keyExtractor={(item) => item.onPress}
+        keyExtractor={(item) => item.productId}
         renderItem={(itemData) => (
           <CartItem
             title={itemData.item.productTitle}
