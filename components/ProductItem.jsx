@@ -19,29 +19,33 @@ const ProductItem = ({ image, title, price, viewDetail, addToCart }) => {
   }
   return (
     <View style={styles.product}>
-      <TouchableComponent useForeground onPress={viewDetail}>
-        <View style={styles.imageContainer}>
-          <Image style={styles.image} source={{ uri: image }} />
-        </View>
+      <View style={styles.touchable}>
+        <TouchableComponent useForeground onPress={viewDetail}>
+          <View>
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} source={{ uri: image }} />
+            </View>
 
-        <View style={styles.productDetail}>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.price}>${price.toFixed(2)}</Text>
-        </View>
+            <View style={styles.productDetail}>
+              <Text style={styles.title}>{title}</Text>
+              <Text style={styles.price}>${price.toFixed(2)}</Text>
+            </View>
 
-        <View style={styles.actions}>
-          <Button
-            color={Colors.PRIMARY}
-            title="View details"
-            onPress={viewDetail}
-          />
-          <Button
-            color={Colors.PRIMARY}
-            title="Add to cart"
-            onPress={addToCart}
-          />
-        </View>
-      </TouchableComponent>
+            <View style={styles.actions}>
+              <Button
+                color={Colors.PRIMARY}
+                title="View details"
+                onPress={viewDetail}
+              />
+              <Button
+                color={Colors.PRIMARY}
+                title="Add to cart"
+                onPress={addToCart}
+              />
+            </View>
+          </View>
+        </TouchableComponent>
+      </View>
     </View>
   );
 };
@@ -57,7 +61,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.WHITE,
     height: 300,
     margin: 20,
-    overflow: 'hidden'
+  },
+  touchable: {
+    overflow: "hidden",
+    borderRadius: 10,
   },
   imageContainer: {
     width: "100%",
