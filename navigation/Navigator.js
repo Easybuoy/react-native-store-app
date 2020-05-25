@@ -6,6 +6,7 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/UI/HeaderButton";
 import ProductOverview from "../screens/shop/ProductOverview";
 import ProductDetail from "../screens/shop/ProductDetail";
+import Cart from "../screens/shop/Cart";
 import Colors from "../constants/Colors";
 
 const Stack = createStackNavigator();
@@ -31,14 +32,14 @@ const MyStack = () => {
       <Stack.Screen
         name="Home"
         component={ProductOverview}
-        options={() => {
+        options={({ navigation }) => {
           return {
             headerRight: () => (
               <HeaderButtons HeaderButtonComponent={HeaderButton}>
                 <Item
                   title="Cart"
                   iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
-                  onPress={() => {}}
+                  onPress={() => navigation.navigate("Cart")}
                 />
               </HeaderButtons>
             ),
@@ -55,6 +56,7 @@ const MyStack = () => {
           };
         }}
       />
+      <Stack.Screen name="Cart" component={Cart} />
     </Stack.Navigator>
   );
 };
