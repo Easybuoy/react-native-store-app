@@ -17,6 +17,7 @@ const ProductOverview = ({ navigation }) => {
           viewDetail={() =>
             navigation.navigate("Product Detail", {
               productId: itemData.item.id,
+              productTitle: itemData.item.title
             })
           }
           addToCart={() => {}}

@@ -20,7 +20,16 @@ const MyStack = () => {
       }}
     >
       <Stack.Screen name="Home" component={ProductOverview} />
-      <Stack.Screen name="Product Detail" component={ProductDetail} />
+      <Stack.Screen
+        name="Product Detail"
+        component={ProductDetail}
+        options={({ route }) => {
+          const { productTitle } = route.params;
+          return {
+            headerTitle: productTitle,
+          };
+        }}
+      />
     </Stack.Navigator>
   );
 };
