@@ -15,6 +15,13 @@ const MyStack = () => {
         headerStyle: {
           backgroundColor: Platform.OS === "android" ? Colors.PRIMARY : "",
         },
+        headerTitleStyle: {
+          fontFamily: "open-sans-bold",
+        },
+        headerBackTitleStyle: {
+          fontFamily: "open-sans",
+        },
+        headerBackTitle: "Back",
         headerTintColor:
           Platform.OS === "android" ? Colors.WHITE : Colors.PRIMARY,
       }}

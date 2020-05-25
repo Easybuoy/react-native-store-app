@@ -79,11 +79,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    marginVertical: 3,
+    marginVertical: 2,
+    fontFamily: "open-sans-bold",
   },
   price: {
     fontSize: 14,
     color: Colors.GREY,
+    fontFamily: "open-sans",
   },
   actions: {
     flexDirection: "row",
