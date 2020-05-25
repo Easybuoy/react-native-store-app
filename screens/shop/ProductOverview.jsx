@@ -1,12 +1,15 @@
-import React from 'react'
-import { View, FlatList, StyleSheet} from 'react-native'
+import React from "react";
+import { View, FlatList, Text, StyleSheet } from "react-native";
+import { useSelector } from "react-redux";
 
 const ProductOverview = () => {
-    return (
-        <View>
-            
-        </View>
-    )
-}
+  const products = useSelector((state) => state.products.availableProducts);
+  return (
+    <FlatList
+      data={products}
+      renderItem={(itemData) => <Text>{itemData.item.title} </Text>}
+    />
+  );
+};
 
-export default ProductOverview
+export default ProductOverview;
