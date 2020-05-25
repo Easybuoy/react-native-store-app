@@ -5,14 +5,32 @@ import { useSelector } from "react-redux";
 import Colors from "../../constants/Colors";
 const Cart = () => {
   const cartTotal = useSelector((state) => state.cart.totalAmount);
+  const cartItems = useSelector((state) => {
+    const transformedCartItem = [];
+    for (const key in state.cart.items) {
+      transformedCartItem.push({
+        productId: key,
+        productTitle: state.cart.items[key].productTitle,
+        productPrice: state.cart.items[key].productPrice,
+        quantity: state.cart.items[key].quantity,
+        sum: state.cart.items[key].sum,
+      });
+    }
+    return transformedCartItem;
+  });
 
   return (
     <View style={styles.screen}>
       <View style={styles.summary}>
         <Text style={styles.summaryText}>
-          Total: <Text style={styles.amount}>${cartTotal}</Text>
-          <Button title="Order Now" onPress={() => {}} />
+          Total: <Text style={styles.amount}>${cartTotal.toFixed()}</Text>
         </Text>
+        <Button
+          color={Colors.SECONDARY}
+          title="Order  Now"
+          disabled={cartItems.length === 0}
+          onPress={() => {}}
+        />
       </View>
 
       {/* <FlatList /> */}
@@ -39,9 +57,11 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.WHITE,
   },
   summaryText: {
-      fontSize: 18,
-      color: Colors.SECONDARY
+    fontSize: 18,
+    fontFamily: "open-sans-bold",
   },
-  amount: {},
+  amount: {
+    color: Colors.SECONDARY,
+  },
 });
 export default Cart;
