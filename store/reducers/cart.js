@@ -48,7 +48,7 @@ export default (state = INITIAL_STATE, action) => {
           selectedCardItem.quantity - 1,
           selectedCardItem.productPrice,
           selectedCardItem.productTitle,
-          selectedCardItem.sum - productPrice
+          selectedCardItem.sum - selectedCardItem.productPrice
         );
         updatedCardItems = {
           ...state.items,
@@ -56,7 +56,7 @@ export default (state = INITIAL_STATE, action) => {
         };
       } else {
         updatedCardItems = { ...state.items };
-        delete updatedCardItem[action.productId];
+        delete updatedCardItems[action.productId];
       }
 
       return {
