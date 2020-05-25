@@ -7,10 +7,13 @@ import {
   ScrollView,
   Button,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+
+import { addToCart } from "../../store/actions/cart";
 import Colors from "../../constants/Colors";
 
 const ProductDetail = ({ route }) => {
+  const dispatch = useDispatch();
   const { productId } = route.params;
   const selectedProduct = useSelector((state) =>
     state.products.availableProducts.find((product) => product.id === productId)
@@ -27,7 +30,7 @@ const ProductDetail = ({ route }) => {
           <Button
             color={Colors.PRIMARY}
             title="Add to Cart"
-            onPress={() => {}}
+            onPress={() => dispatch(addToCart(selectedProduct))}
           />
         </View>
         <Text style={styles.price}>${selectedProduct.price.toFixed()}</Text>

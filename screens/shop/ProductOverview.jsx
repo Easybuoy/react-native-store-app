@@ -2,11 +2,11 @@ import React from "react";
 import { View, FlatList, Text, StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
-import { } from '../../store/actions/cart'
+import { addToCart } from "../../store/actions/cart";
 import ProductItem from "../../components/ProductItem";
 
 const ProductOverview = ({ navigation }) => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const products = useSelector((state) => state.products.availableProducts);
   return (
@@ -20,10 +20,10 @@ const ProductOverview = ({ navigation }) => {
           viewDetail={() =>
             navigation.navigate("Product Detail", {
               productId: itemData.item.id,
-              productTitle: itemData.item.title
+              productTitle: itemData.item.title,
             })
           }
-          addToCart={() => dispatch()}
+          addToCart={() => dispatch(addToCart(itemData.item))}
         />
       )}
     />
