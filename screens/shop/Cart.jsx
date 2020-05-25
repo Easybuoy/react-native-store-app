@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, FlatList, Button } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import { removeFromCart } from "../../store/actions/cart";
+import { addOrder } from "../../store/actions/orders";
 import CartItem from "../../components/shop/CartItem";
 import Colors from "../../constants/Colors";
 
@@ -35,7 +36,7 @@ const Cart = () => {
           color={Colors.SECONDARY}
           title="Order  Now"
           disabled={cartItems.length === 0}
-          onPress={() => {}}
+          onPress={() => dispatch(addOrder(cartItems, cartTotal))}
         />
       </View>
 
