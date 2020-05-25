@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 import ProductItem from "../../components/ProductItem";
 
-const ProductOverview = () => {
+const ProductOverview = ({ navigation }) => {
   const products = useSelector((state) => state.products.availableProducts);
   return (
     <FlatList
@@ -14,7 +14,11 @@ const ProductOverview = () => {
           title={itemData.item.title}
           image={itemData.item.imageUrl}
           price={itemData.item.price}
-          viewDetail={() => {}}
+          viewDetail={() =>
+            navigation.navigate("Product Detail", {
+              productId: itemData.item.id,
+            })
+          }
           addToCart={() => {}}
         />
       )}

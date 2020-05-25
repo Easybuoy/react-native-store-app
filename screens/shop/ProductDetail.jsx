@@ -1,12 +1,20 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
+import { useSelector } from "react-redux";
 
-const ProductDetail = () => {
-  return <ScrollView>
+const ProductDetail = ({ route }) => {
+  const { productId } = route.params;
+  const selectedProduct = useSelector((state) =>
+    state.products.availableProducts.find((product) => product.id === productId)
+  );
+  console.log(productId);
+  return (
+    <ScrollView>
       <View>
-          <Text>He</Text>
+        <Text>{selectedProduct.title}</Text>
       </View>
-  </ScrollView>;
+    </ScrollView>
+  );
 };
 
 const styles = StyleSheet.create({});
