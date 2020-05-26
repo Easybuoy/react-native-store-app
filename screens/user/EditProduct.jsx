@@ -43,6 +43,12 @@ const EditProduct = ({ route, navigation }) => {
             style={styles.input}
             value={title}
             onChangeText={(text) => setTitle(text)}
+            keyboardType="default"
+            autoCapitalize="sentences"
+            autoCorrect
+            returnKeyType="next"
+            onEndEditing={() => console.log('a')}
+            onSubmitEditing={() => console.log('a')}
           />
         </View>
 
@@ -52,6 +58,7 @@ const EditProduct = ({ route, navigation }) => {
             style={styles.input}
             value={imageUrl}
             onChangeText={(text) => setImageUrl(text)}
+            returnKeyType="next"
           />
         </View>
 
@@ -62,6 +69,7 @@ const EditProduct = ({ route, navigation }) => {
               style={styles.input}
               value={price}
               onChangeText={(text) => setPrice(text)}
+              keyboardType="decimal-pad"
             />
           </View>
         )}
