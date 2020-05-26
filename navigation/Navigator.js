@@ -111,8 +111,8 @@ const AdminStack = () => {
         component={EditProduct}
         options={({ route }) => {
           const productId = route.params?.productId;
-          const { submitFn } = route.params;
-          console.log(submitFn, 'route');
+          const submitFn = route.params?.submitFn;
+
           return {
             headerTitle: productId ? "Edit Product" : "Add Product",
             headerRight: () => (
@@ -122,7 +122,7 @@ const AdminStack = () => {
                   iconName={
                     Platform.OS === "android" ? "md-checkmark" : "ios-checkmark"
                   }
-                  onPress={() => submitFn}
+                  onPress={submitFn}
                 />
               </HeaderButtons>
             ),

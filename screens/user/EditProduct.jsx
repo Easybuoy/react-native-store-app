@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { View, ScrollView, Text, TextInput, StyleSheet } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
+import { createProduct, updateProduct } from "../../store/actions/products";
 import Colors from "../../constants/Colors";
 
 const EditProduct = ({ route, navigation }) => {
@@ -17,15 +18,22 @@ const EditProduct = ({ route, navigation }) => {
   const [description, setDescription] = useState(
     editedProduct ? editedProduct.description : ""
   );
-
+  const dispatch = useDispatch();
   const submitHandler = useCallback(() => {
-    console.log("sib");
+    if (editedProduct) {
+      dispatch(
+        updateProduct(productId, title, description, imageUrl, price)
+      );
+    } else {
+      dispatch(
+        createProduct(productId, title, description, imageUrl, price)
+      );
+    }
   });
 
   useEffect(() => {
-    console.log(navigation, '=');
     navigation.setParams({ submitFn: submitHandler });
-  }, [submitHandler]);
+  }, []);
 
   return (
     <ScrollView>
