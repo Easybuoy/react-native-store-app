@@ -20,6 +20,7 @@ export default (state = INITIAL_STATE, action) => {
         ),
       };
     case CREATE_PRODUCT:
+      console.log(action);
       const newProduct = new Product(
         new Date().toString(),
         "u1",
@@ -45,12 +46,12 @@ export default (state = INITIAL_STATE, action) => {
         action.productData.description,
         state.userProducts[productIndex].price
       );
-      const updatedProducts = { ...state.userProducts };
+      const updatedProducts = [...state.userProducts];
       updatedProducts[productIndex] = updatedProduct;
       const availableProductIndex = state.availableProducts.findIndex(
         (product) => product.id === action.productId
       );
-      const updatedAvailableProducts = { ...state.availableProducts };
+      const updatedAvailableProducts = [...state.availableProducts];
       updatedAvailableProducts[availableProductIndex] = updatedProduct;
       return {
         ...state,
