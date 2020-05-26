@@ -1,6 +1,8 @@
 import React from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, Button, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
+
+import Colors from "../../constants/Colors";
 import ProductItem from "../../components/shop/ProductItem";
 
 const Products = ({}) => {
@@ -15,9 +17,20 @@ const Products = ({}) => {
           title={itemData.item.title}
           price={itemData.item.price}
           image={itemData.item.imageUrl}
-          viewDetail={() => {}}
+          onSelect={() => {}}
           addToCart={() => {}}
-        />
+        >
+          <Button
+            color={Colors.PRIMARY}
+            title="Edit"
+            onPress={() => selectHandler(itemData.item.id, itemData.item.title)}
+          />
+          <Button
+            color={Colors.PRIMARY}
+            title="Delete"
+            onPress={() => dispatch(addToCart(itemData.item))}
+          />
+        </ProductItem>
       )}
     />
   );
