@@ -85,9 +85,18 @@ const AdminStack = () => {
             headerLeft: () => (
               <HeaderButtons HeaderButtonComponent={HeaderButton}>
                 <Item
-                  title="Cart"
+                  title="Menu"
                   iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
                   onPress={() => navigation.toggleDrawer()}
+                />
+              </HeaderButtons>
+            ),
+            headerRight: () => (
+              <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                <Item
+                  title="Add"
+                  iconName={Platform.OS === "android" ? "md-create" : "ios-create"}
+                  onPress={() => navigation.navigate('Edit Product')}
                 />
               </HeaderButtons>
             ),
@@ -95,11 +104,7 @@ const AdminStack = () => {
         }}
       />
 
-      <Stack.Screen
-        name="Edit Product"
-        component={EditProduct}
-        
-      />
+      <Stack.Screen name="Edit Product" component={EditProduct} />
     </Stack.Navigator>
   );
 };
