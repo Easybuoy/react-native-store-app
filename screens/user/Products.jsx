@@ -1,11 +1,11 @@
 import React from "react";
-import { FlatList, Button, StyleSheet } from "react-native";
+import { FlatList, Button } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
+import { Alert } from "react-native";
 
 import Colors from "../../constants/Colors";
 import { deleteProduct } from "../../store/actions/products";
 import ProductItem from "../../components/shop/ProductItem";
-import { NavigationContainer } from "@react-navigation/native";
 
 const Products = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -16,6 +16,20 @@ const Products = ({ navigation }) => {
       productId: id,
     });
   };
+
+  const deleteHandler = (id) => {
+    Alert.alert("Are you sure?", "Do you really want to delete this item?", [
+      { text: "No", style: "default" },
+      {
+        text: "Yes",
+        style: "destructive",
+        onPress: () => {
+          dispatch(deleteProduct(id));
+        },
+      },
+    ]);
+  };
+
   return (
     <FlatList
       data={userProducts}
@@ -36,7 +50,7 @@ const Products = ({ navigation }) => {
           <Button
             color={Colors.PRIMARY}
             title="Delete"
-            onPress={() => dispatch(deleteProduct(itemData.item.id))}
+            onPress={() => deleteHandler(itemData.item.id)}
           />
         </ProductItem>
       )}

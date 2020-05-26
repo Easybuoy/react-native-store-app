@@ -7,7 +7,7 @@ import Colors from "../../constants/Colors";
 
 const EditProduct = ({ route, navigation }) => {
   const productId = route.params?.productId;
-  
+
   const editedProduct = useSelector((state) =>
     state.products.userProducts.find((product) => product.id === productId)
   );
@@ -20,12 +20,14 @@ const EditProduct = ({ route, navigation }) => {
     editedProduct ? editedProduct.description : ""
   );
   const dispatch = useDispatch();
+
   const submitHandler = useCallback(() => {
     if (editedProduct) {
       dispatch(updateProduct(productId, title, description, imageUrl, price));
     } else {
       dispatch(createProduct(productId, title, description, imageUrl, +price));
     }
+    navigation.goBack();
   }, [dispatch, editedProduct, productId, title, description, imageUrl, price]);
 
   useEffect(() => {

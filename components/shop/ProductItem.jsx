@@ -11,14 +11,21 @@ import {
 } from "react-native";
 
 import Colors from "../../constants/Colors";
+import Card from "../UI/Card";
 
-const ProductItem = ({ image, title, price, onSelect, addToCart, children }) => {
+const ProductItem = ({
+  image,
+  title,
+  price,
+  onSelect,
+  children,
+}) => {
   let TouchableComponent = TouchableOpacity;
   if (Platform.OS === "android" && Platform.Version >= 21) {
     TouchableComponent = TouchableNativeFeedback;
   }
   return (
-    <View style={styles.product}>
+    <Card style={styles.product}>
       <View style={styles.touchable}>
         <TouchableComponent useForeground onPress={onSelect}>
           <View>
@@ -31,25 +38,16 @@ const ProductItem = ({ image, title, price, onSelect, addToCart, children }) => 
               <Text style={styles.price}>${price.toFixed(2)}</Text>
             </View>
 
-            <View style={styles.actions}>
-              {children}
-            </View>
+            <View style={styles.actions}>{children}</View>
           </View>
         </TouchableComponent>
       </View>
-    </View>
+    </Card>
   );
 };
 
 const styles = StyleSheet.create({
   product: {
-    shadowColor: Colors.BLACK,
-    shadowOpacity: 0.26,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    elevation: 5,
-    borderRadius: 10,
-    backgroundColor: Colors.WHITE,
     height: 300,
     margin: 20,
   },
