@@ -10,12 +10,14 @@ import ProductOverview from "../screens/shop/ProductOverview";
 import ProductDetail from "../screens/shop/ProductDetail";
 import Orders from "../screens/shop/Orders";
 import Cart from "../screens/shop/Cart";
+import Products from "../screens/user/Products";
 import Colors from "../constants/Colors";
 
 const Stack = createStackNavigator();
 let screenOptionsStyle = {
   headerStyle: {
     backgroundColor: Platform.OS === "android" ? Colors.PRIMARY : "",
+    borderBottomWidth: 1,
   },
   headerTitleStyle: {
     fontFamily: "open-sans-bold",
@@ -67,6 +69,30 @@ const HomeStack = () => {
         }}
       />
       <Stack.Screen name="Your Cart" component={Cart} />
+    </Stack.Navigator>
+  );
+};
+
+const AdminStack = () => {
+  return (
+    <Stack.Navigator screenOptions={screenOptionsStyle}>
+      <Stack.Screen
+        name="Products"
+        component={Products}
+        options={({ navigation }) => {
+          return {
+            headerLeft: () => (
+              <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                <Item
+                  title="Cart"
+                  iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+                  onPress={() => navigation.toggleDrawer()}
+                />
+              </HeaderButtons>
+            ),
+          };
+        }}
+      />
     </Stack.Navigator>
   );
 };
@@ -123,6 +149,19 @@ const MyDrawer = () => {
           drawerIcon: (drawerConfig) => (
             <Ionicons
               name={Platform.OS === "android" ? "md-list" : "ios-list"}
+              size={23}
+              color={drawerConfig.color}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Admin"
+        component={AdminStack}
+        options={{
+          drawerIcon: (drawerConfig) => (
+            <Ionicons
+              name={Platform.OS === "android" ? "md-create" : "ios-create"}
               size={23}
               color={drawerConfig.color}
             />
