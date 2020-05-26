@@ -16,6 +16,27 @@ const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 const formReducer = (state, action) => {
   switch (action.type) {
     case FORM_INPUT_UPDATE:
+      const updatedValues = {
+        ...state.inputValues,
+        [action.input]: [action.value],
+      };
+
+      const updatedValidities = {
+        ...state.inputValidities,
+        [action.input]: [action.isValid],
+      };
+
+      let updatedFormIsValid = true;
+      for (const key in updatedValidities) {
+        updatedFormIsValid = updatedFormIsValid && updatedValidities[key];
+      }
+      return {
+        formIsValid: updatedFormIsValid,
+        inputValues: updatedValues,
+        inputValidities: updatedValidities,
+      };
+    default:
+      return state;
   }
 };
 
@@ -25,15 +46,7 @@ const EditProduct = ({ route, navigation }) => {
   const editedProduct = useSelector((state) =>
     state.products.userProducts.find((product) => product.id === productId)
   );
-  // const [title, setTitle] = useState(editedProduct ? editedProduct.title : "");
-  // const [titleIsValid, setTitleIsValid] = useState(false);
-  // const [imageUrl, setImageUrl] = useState(
-  //   editedProduct ? editedProduct.imageUrl : ""
-  // );
-  // const [price, setPrice] = useState("");
-  // const [description, setDescription] = useState(
-  //   editedProduct ? editedProduct.description : ""
-  // );
+
   const dispatch = useDispatch();
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -52,26 +65,19 @@ const EditProduct = ({ route, navigation }) => {
   });
 
   const submitHandler = useCallback(() => {
-    if (!titleIsValid) {
+    const { title, description, imageUrl, price } = formState.inputValues;
+    if (!formState.formIsValid) {
       Alert.alert("Wrong Input", "Please check form errors", [{ text: "Ok" }]);
       return;
     }
+
     if (editedProduct) {
       dispatch(updateProduct(productId, title, description, imageUrl, price));
     } else {
       dispatch(createProduct(productId, title, description, imageUrl, +price));
     }
     navigation.goBack();
-  }, [
-    dispatch,
-    editedProduct,
-    productId,
-    title,
-    description,
-    imageUrl,
-    price,
-    titleIsValid,
-  ]);
+  }, [dispatch, editedProduct, productId, formState]);
 
   useEffect(() => {
     navigation.setParams({ submitFn: submitHandler });
@@ -97,7 +103,7 @@ const EditProduct = ({ route, navigation }) => {
           <Text style={styles.label}>Title</Text>
           <TextInput
             style={styles.input}
-            value={title}
+            value={formState.inputValues.title}
             onChangeText={(text) => textChangeHandler(text, "title")}
             keyboardType="default"
             autoCapitalize="sentences"
@@ -106,17 +112,22 @@ const EditProduct = ({ route, navigation }) => {
             onEndEditing={() => console.log("a")}
             onSubmitEditing={() => console.log("a")}
           />
-          {!titleIsValid && <Text>Please enter a valid title!</Text>}
+          {!formState.inputValidities.title && (
+            <Text>Please enter a valid title!</Text>
+          )}
         </View>
 
         <View style={styles.formControl}>
           <Text style={styles.label}>Image Url</Text>
           <TextInput
             style={styles.input}
-            value={imageUrl}
+            value={formState.inputValues.imageUrl}
             onChangeText={(text) => textChangeHandler(text, "imageUrl")}
             returnKeyType="next"
           />
+          {!formState.inputValidities.imageUrl && (
+            <Text>Please enter a valid Image Url!</Text>
+          )}
         </View>
 
         {editedProduct ? null : (
@@ -124,10 +135,13 @@ const EditProduct = ({ route, navigation }) => {
             <Text style={styles.label}>Price</Text>
             <TextInput
               style={styles.input}
-              value={price}
+              value={formState.inputValues.price}
               onChangeText={(text) => textChangeHandler(text, price)}
               keyboardType="decimal-pad"
             />
+            {!formState.inputValidities.price && (
+              <Text>Please enter a valid price!</Text>
+            )}
           </View>
         )}
 
@@ -135,9 +149,12 @@ const EditProduct = ({ route, navigation }) => {
           <Text style={styles.label}>Description</Text>
           <TextInput
             style={styles.input}
-            value={description}
-            onChangeText={(text) => textChangeHandler(text, 'description')}
+            value={formState.inputValues.description}
+            onChangeText={(text) => textChangeHandler(text, "description")}
           />
+          {!formState.inputValidities.description && (
+            <Text>Please enter a valid description!</Text>
+          )}
         </View>
       </View>
     </ScrollView>
