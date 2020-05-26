@@ -1,28 +1,62 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, ScrollView, Text, TextInput, StyleSheet } from "react-native";
+import { useSelector } from "react-redux";
+
 import Colors from "../../constants/Colors";
-const EditProduct = () => {
+
+const EditProduct = ({ route }) => {
+  const productId = route.params?.productId;
+  const editedProduct = useSelector((state) =>
+    state.products.userProducts.find((product) => product.id === productId)
+  );
+  const [title, setTitle] = useState(editedProduct ? editedProduct.title : "");
+  const [imageUrl, setImageUrl] = useState(
+    editedProduct ? editedProduct.imageUrl : ""
+  );
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState(
+    editedProduct ? editedProduct.description : ""
+  );
+
   return (
     <ScrollView>
       <View style={styles.form}>
         <View style={styles.formControl}>
           <Text style={styles.label}>Title</Text>
-          <TextInput style={styles.input} />
+          <TextInput
+            style={styles.input}
+            value={title}
+            onChangeText={(text) => setTitle(text)}
+          />
         </View>
 
         <View style={styles.formControl}>
           <Text style={styles.label}>Image Url</Text>
-          <TextInput style={styles.input} />
+          <TextInput
+            style={styles.input}
+            value={imageUrl}
+            onChangeText={(text) => setImageUrl(text)}
+          />
         </View>
 
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Price</Text>
-          <TextInput style={styles.input} />
-        </View>
+        {editedProduct ? null : (
+          <View style={styles.formControl}>
+            <Text style={styles.label}>Price</Text>
+            <TextInput
+              style={styles.input}
+              value={price}
+              onChangeText={(text) => setPrice(text)}
+            />
+          </View>
+        )}
 
         <View style={styles.formControl}>
           <Text style={styles.label}>Description</Text>
-          <TextInput style={styles.input} />
+          <TextInput
+            style={styles.input}
+            value={description}
+            onChangeText={(text) => setDescription(text)}
+          />
         </View>
       </View>
     </ScrollView>
