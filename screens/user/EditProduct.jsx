@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { View, ScrollView, Text, TextInput, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 
 import Colors from "../../constants/Colors";
 
-const EditProduct = ({ route }) => {
+const EditProduct = ({ route, navigation }) => {
   const productId = route.params?.productId;
   const editedProduct = useSelector((state) =>
     state.products.userProducts.find((product) => product.id === productId)
@@ -17,6 +17,15 @@ const EditProduct = ({ route }) => {
   const [description, setDescription] = useState(
     editedProduct ? editedProduct.description : ""
   );
+
+  const submitHandler = useCallback(() => {
+    console.log("sib");
+  });
+
+  useEffect(() => {
+    console.log(navigation, '=');
+    navigation.setParams({ submitFn: submitHandler });
+  }, [submitHandler]);
 
   return (
     <ScrollView>
