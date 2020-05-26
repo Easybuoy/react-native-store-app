@@ -95,8 +95,10 @@ const AdminStack = () => {
               <HeaderButtons HeaderButtonComponent={HeaderButton}>
                 <Item
                   title="Add"
-                  iconName={Platform.OS === "android" ? "md-create" : "ios-create"}
-                  onPress={() => navigation.navigate('Edit Product')}
+                  iconName={
+                    Platform.OS === "android" ? "md-create" : "ios-create"
+                  }
+                  onPress={() => navigation.navigate("Edit Product")}
                 />
               </HeaderButtons>
             ),
@@ -104,7 +106,28 @@ const AdminStack = () => {
         }}
       />
 
-      <Stack.Screen name="Edit Product" component={EditProduct} />
+      <Stack.Screen
+        name="Edit Product"
+        component={EditProduct}
+        options={({ route }) => {
+          const productId = route.params?.productId;
+          return {
+            headerTitle: productId ? "Edit Product" : "Add Product",
+            headerRight: () => (
+              <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                <Item
+                  title="Add"
+                  iconName={
+                    Platform.OS === "android" ? "md-checkmark" : "ios-checkmark"
+                  }
+                  
+                  onPress={() => navigation.navigate("Edit Product")}
+                />
+              </HeaderButtons>
+            ),
+          };
+        }}
+      />
     </Stack.Navigator>
   );
 };

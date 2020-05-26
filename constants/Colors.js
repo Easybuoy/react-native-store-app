@@ -5,4 +5,5 @@ export default {
   BLACK: "black",
   GREY: "#888",
   RED: "red",
+  LIGHT_GREY: "#ccc",
 };
