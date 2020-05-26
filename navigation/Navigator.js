@@ -31,7 +31,7 @@ const HomeStack = () => {
   return (
     <Stack.Navigator screenOptions={screenOptionsStyle}>
       <Stack.Screen
-        name="Home"
+        name="Product Overview"
         component={ProductOverview}
         options={({ navigation }) => {
           return {
@@ -49,7 +49,7 @@ const HomeStack = () => {
                 <Item
                   title="Cart"
                   iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
-                  onPress={() => navigation.navigate("Cart")}
+                  onPress={() => navigation.navigate("Your Cart")}
                 />
               </HeaderButtons>
             ),

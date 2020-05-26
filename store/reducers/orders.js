@@ -6,7 +6,7 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
-  switch (action.types) {
+  switch (action.type) {
     case ADD_ORDER:
       const newOrder = new Order(
         new Date().toString(),
@@ -19,6 +19,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         orders: [...state.orders, newOrder],
       };
+    default:
+      return state;
   }
-  return state;
 };

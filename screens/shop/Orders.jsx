@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 const Orders = () => {
   const orders = useSelector((state) => state.orders.orders);
+  console.log(orders);
   return (
     <FlatList
       data={orders}
