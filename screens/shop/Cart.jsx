@@ -6,6 +6,7 @@ import { removeFromCart } from "../../store/actions/cart";
 import { addOrder } from "../../store/actions/orders";
 import CartItem from "../../components/shop/CartItem";
 import Colors from "../../constants/Colors";
+import Card from "../../components/UI/Card";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const Cart = () => {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.summary}>
+      <Card style={styles.summary}>
         <Text style={styles.summaryText}>
           Total:{" "}
           <Text style={styles.amount}>
@@ -41,7 +42,7 @@ const Cart = () => {
           disabled={cartItems.length === 0}
           onPress={() => dispatch(addOrder(cartItems, cartTotal))}
         />
-      </View>
+      </Card>
 
       <FlatList
         data={cartItems}
@@ -52,6 +53,7 @@ const Cart = () => {
             quantity={itemData.item.quantity}
             amount={itemData.item.sum}
             onRemove={() => dispatch(removeFromCart(itemData.item.productId))}
+            deletable
           />
         )}
       />
@@ -69,13 +71,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 20,
     padding: 10,
-    shadowColor: Colors.BLACK,
-    shadowOpacity: 0.26,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    elevation: 5,
-    borderRadius: 10,
-    backgroundColor: Colors.WHITE,
   },
   summaryText: {
     fontSize: 18,

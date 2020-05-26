@@ -1,42 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 
-import CardItem from "./CartItem";
+import Card from "../UI/Card";
+import CartItem from "../shop/CartItem";
 import Colors from "../../constants/Colors";
 
-const OrderItem = ({ amount, date }) => {
+const OrderItem = ({ amount, date, items }) => {
+  const [showDetails, setShowDetails] = useState(false);
   return (
-    <View style={styles.orderItem}>
+    <Card style={styles.orderItem}>
       <View style={styles.summary}>
         <Text style={styles.totalAmount}>${amount.toFixed(2)}</Text>
         <Text style={styles.date}>{date}</Text>
       </View>
 
-      <Button color={Colors.PRIMARY} title="Show Details" />
-      {/* <CardItem /> */}
-    </View>
+      <Button
+        color={Colors.PRIMARY}
+        title={showDetails ? "Hide Details" : "Show Details"}
+        onPress={() => setShowDetails((prevState) => !prevState)}
+      />
+
+      {showDetails && (
+        <View style={styles.detailItems}>
+          {items.map((item) => (
+            <CartItem
+              key={item.productTitle}
+              title={item.productTitle}
+              quantity={item.quantity}
+              amount={item.sum}
+            />
+          ))}
+        </View>
+      )}
+    </Card>
   );
 };
 
 const styles = StyleSheet.create({
   orderItem: {
-    shadowColor: Colors.BLACK,
-    shadowOpacity: 0.26,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    elevation: 5,
-    borderRadius: 10,
-    backgroundColor: Colors.WHITE,
     margin: 20,
     padding: 10,
-    alignItems: 'center'
+    alignItems: "center",
   },
   summary: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
-    marginVertical: 10
+    marginVertical: 10,
   },
   totalAmount: {
     fontFamily: "open-sans-bold",
@@ -46,6 +57,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "open-sans",
     color: Colors.GREY,
+  },
+  detailItems: {
+    width: "100%",
   },
 });
 
