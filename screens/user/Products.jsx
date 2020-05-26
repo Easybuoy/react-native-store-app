@@ -5,11 +5,17 @@ import { useSelector, useDispatch } from "react-redux";
 import Colors from "../../constants/Colors";
 import { deleteProduct } from "../../store/actions/products";
 import ProductItem from "../../components/shop/ProductItem";
+import { NavigationContainer } from "@react-navigation/native";
 
-const Products = ({}) => {
+const Products = ({ navigation }) => {
   const dispatch = useDispatch();
   const userProducts = useSelector((state) => state.products.userProducts);
 
+  const onSelectHandler = (id) => {
+    navigation.navigate("Edit Product", {
+      productId: id,
+    });
+  };
   return (
     <FlatList
       data={userProducts}
@@ -19,13 +25,13 @@ const Products = ({}) => {
           title={itemData.item.title}
           price={itemData.item.price}
           image={itemData.item.imageUrl}
-          onSelect={() => {}}
+          onSelect={() => onSelectHandler(itemData.item.id)}
           addToCart={() => {}}
         >
           <Button
             color={Colors.PRIMARY}
             title="Edit"
-            onPress={() => selectHandler(itemData.item.id, itemData.item.title)}
+            onPress={() => onSelectHandler(itemData.item.id)}
           />
           <Button
             color={Colors.PRIMARY}

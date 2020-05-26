@@ -11,6 +11,7 @@ import ProductDetail from "../screens/shop/ProductDetail";
 import Orders from "../screens/shop/Orders";
 import Cart from "../screens/shop/Cart";
 import Products from "../screens/user/Products";
+import EditProduct from "../screens/user/EditProduct";
 import Colors from "../constants/Colors";
 
 const Stack = createStackNavigator();
@@ -92,6 +93,12 @@ const AdminStack = () => {
             ),
           };
         }}
+      />
+
+      <Stack.Screen
+        name="Edit Product"
+        component={EditProduct}
+        
       />
     </Stack.Navigator>
   );
