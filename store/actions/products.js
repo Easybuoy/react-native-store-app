@@ -35,7 +35,7 @@ export const createProduct = (title, description, imageUrl, price) => (
   //     price,
   //   },
   // });
-  return {
+  dispatch({
     type: CREATE_PRODUCT,
     productData: {
       title,
@@ -43,7 +43,7 @@ export const createProduct = (title, description, imageUrl, price) => (
       imageUrl,
       price,
     },
-  };
+  });
 };
 
 export const updateProduct = (id, title, description, imageUrl) => {

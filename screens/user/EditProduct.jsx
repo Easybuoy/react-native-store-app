@@ -1,4 +1,6 @@
-import React, { useEffect, useCallback, useReducer } from "react";
+import React, { useCallback, useReducer } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+
 import {
   View,
   ScrollView,
@@ -64,7 +66,7 @@ const EditProduct = ({ route, navigation }) => {
     formIsValid: editedProduct ? true : false,
   });
 
-  console.log(formState, "fffstttt");
+
   const submitHandler = useCallback(() => {
     const { title, description, imageUrl, price } = formState.inputValues;
     if (!formState.formIsValid) {
@@ -76,14 +78,20 @@ const EditProduct = ({ route, navigation }) => {
     } else {
       dispatch(createProduct(title, description, imageUrl, +price));
     }
-    console.log(navigation, "nnm");
+
     navigation.goBack();
   }, [dispatch, productId, formState]);
 
-  useEffect(() => {
-    // console.log("nnnavvvv", navigation);
-    navigation.setParams({ submitFn: submitHandler });
-  }, [submitHandler]);
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something when the screen is focused
+      navigation.setParams({ submitFn: submitHandler });
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, [submitHandler, navigation])
+  );
 
   const inputChangeHandler = useCallback(
     (inputIdentifier, inputValue, inputValidity) => {

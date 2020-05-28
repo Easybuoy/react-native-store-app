@@ -110,7 +110,6 @@ const AdminStack = () => {
         name="Edit Product"
         component={EditProduct}
         options={({ route }) => {
-          console.log(route, '====rrrrs')
           const productId = route.params?.productId;
           const submitFn = route.params?.submitFn;
 
