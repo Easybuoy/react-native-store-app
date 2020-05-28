@@ -28,6 +28,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         availableProducts: action.products,
+        userProducts: action.products
       };
     }
     case CREATE_PRODUCT:

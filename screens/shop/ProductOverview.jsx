@@ -1,14 +1,19 @@
-import React from "react";
-import { View, FlatList, Button, StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { FlatList, Button } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import Colors from "../../constants/Colors";
 import { addToCart } from "../../store/actions/cart";
 import ProductItem from "../../components/shop/ProductItem";
+import { fetchProducts } from "../../store/actions/products";
 
 const ProductOverview = ({ navigation }) => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products.availableProducts);
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
   const selectHandler = (id, title) => {
     navigation.navigate("Product Detail", {

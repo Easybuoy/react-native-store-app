@@ -4,6 +4,7 @@ import {
   UPDATE_PRODUCT,
   GET_PRODUCTS,
 } from "../types";
+import Product from "../../models/products";
 
 export const deleteProduct = (productId) => {
   return { type: DELETE_PRODUCT, productId };
@@ -55,7 +56,7 @@ export const updateProduct = (id, title, description, imageUrl) => {
   };
 };
 
-const fetchProducts = () => async (dispatch) => {
+export const fetchProducts = () => async (dispatch) => {
   const response = await fetch(
     "https://rn-store-4963f.firebaseio.com/products.json",
     {
@@ -67,6 +68,22 @@ const fetchProducts = () => async (dispatch) => {
   );
 
   const responseData = await response.json();
+  console.log(responseData);
+  const loadedProducts = [];
 
-  dispatch({ type: GET_PRODUCTS, products: responseData });
+  for (const key in responseData) {
+    console.log(responseData[key].price, '=--')
+    loadedProducts.push(
+      new Product(
+        key,
+        "u1",
+        responseData[key].title,
+        responseData[key].imageUrl,
+        responseData[key].description,
+        responseData[key].price
+      )
+    );
+  }
+  console.log(loadedProducts);
+  dispatch({ type: GET_PRODUCTS, products: loadedProducts });
 };
