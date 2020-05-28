@@ -57,33 +57,40 @@ export const updateProduct = (id, title, description, imageUrl) => {
 };
 
 export const fetchProducts = () => async (dispatch) => {
-  const response = await fetch(
-    "https://rn-store-4963f.firebaseio.com/products.json",
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
-
-  const responseData = await response.json();
-  console.log(responseData);
-  const loadedProducts = [];
-
-  for (const key in responseData) {
-    console.log(responseData[key].price, '=--')
-    loadedProducts.push(
-      new Product(
-        key,
-        "u1",
-        responseData[key].title,
-        responseData[key].imageUrl,
-        responseData[key].description,
-        responseData[key].price
-      )
+  try {
+    const response = await fetch(
+      "https://rn-store-4963f.firebaseio.com/products.json",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     );
+
+    if (!response.ok) {
+      throw new Error("Something went wrong");
+    }
+
+    const responseData = await response.json();
+
+    const loadedProducts = [];
+
+    for (const key in responseData) {
+      loadedProducts.push(
+        new Product(
+          key,
+          "u1",
+          responseData[key].title,
+          responseData[key].imageUrl,
+          responseData[key].description,
+          responseData[key].price
+        )
+      );
+    }
+
+    dispatch({ type: GET_PRODUCTS, products: loadedProducts });
+  } catch (error) {
+    throw error;
   }
-  console.log(loadedProducts);
-  dispatch({ type: GET_PRODUCTS, products: loadedProducts });
 };

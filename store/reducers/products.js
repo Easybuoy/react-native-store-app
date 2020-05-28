@@ -4,12 +4,11 @@ import {
   UPDATE_PRODUCT,
   GET_PRODUCTS,
 } from "../types";
-import PRODUCTS from "../../data/dummy-data";
 import Product from "../../models/products";
 
 const INITIAL_STATE = {
-  availableProducts: PRODUCTS,
-  userProducts: PRODUCTS.filter((product) => product.ownerId === "u1"),
+  availableProducts: [],
+  userProducts: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -28,7 +27,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         availableProducts: action.products,
-        userProducts: action.products
+        userProducts: action.products,
       };
     }
     case CREATE_PRODUCT:
