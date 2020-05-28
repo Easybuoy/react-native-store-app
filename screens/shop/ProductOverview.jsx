@@ -21,7 +21,7 @@ const ProductOverview = ({ navigation }) => {
   const products = useSelector((state) => state.products.availableProducts);
 
   const loadProducts = useCallback(async () => {
-    setError(null)
+    setError(null);
     try {
       await dispatch(fetchProducts());
     } catch (error) {
@@ -35,6 +35,14 @@ const ProductOverview = ({ navigation }) => {
     loadProducts();
     setIsLoading(false);
   }, [dispatch, loadProducts]);
+
+  useEffect(() => {
+    const willFocusSub = navigation.addListener("willFocus", () => loadProducts);
+
+    return () => {
+      // willFocusSub.remove()
+    }
+  }, [loadProducts]);
 
   const selectHandler = (id, title) => {
     navigation.navigate("Product Detail", {

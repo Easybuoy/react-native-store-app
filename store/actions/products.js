@@ -6,8 +6,21 @@ import {
 } from "../types";
 import Product from "../../models/products";
 
-export const deleteProduct = (productId) => {
-  return { type: DELETE_PRODUCT, productId };
+export const deleteProduct = (productId) => async (dispatch) => {
+  try {
+    console.log(productId)
+    const response = await fetch(
+      `https://rn-store-4963f.firebaseio.com/products${productId}.json`,
+      {
+        method: "DELETE",
+      }
+    );
+    const responseData = await response.json();
+console.log(responseData)
+    return dispatch({ type: DELETE_PRODUCT, productId });
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const createProduct = (title, description, imageUrl, price) => async (
@@ -30,7 +43,6 @@ export const createProduct = (title, description, imageUrl, price) => async (
   );
 
   const responseData = await response.json();
-  console.log(responseData);
 
   return dispatch({
     type: CREATE_PRODUCT,
@@ -44,16 +56,34 @@ export const createProduct = (title, description, imageUrl, price) => async (
   });
 };
 
-export const updateProduct = (id, title, description, imageUrl) => {
-  return {
-    type: UPDATE_PRODUCT,
-    productId: id,
-    productData: {
-      title,
-      description,
-      imageUrl,
-    },
-  };
+export const updateProduct = (id, title, description, imageUrl) => async (
+  dispatch
+) => {
+  try {
+    await fetch(`https://rn-store-4963f.firebaseio.com/products${id}.json`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        imageUrl,
+      }),
+    });
+
+    return dispatch({
+      type: UPDATE_PRODUCT,
+      productId: id,
+      productData: {
+        title,
+        description,
+        imageUrl,
+      },
+    });
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const fetchProducts = () => async (dispatch) => {
