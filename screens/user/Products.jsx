@@ -36,6 +36,7 @@ const Products = ({ navigation }) => {
       keyExtractor={(item) => item.id}
       renderItem={(itemData) => (
         <ProductItem
+          key={itemData.item.id}
           title={itemData.item.title}
           price={itemData.item.price}
           image={itemData.item.imageUrl}

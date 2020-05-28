@@ -66,7 +66,6 @@ const EditProduct = ({ route, navigation }) => {
     formIsValid: editedProduct ? true : false,
   });
 
-
   const submitHandler = useCallback(() => {
     const { title, description, imageUrl, price } = formState.inputValues;
     if (!formState.formIsValid) {
