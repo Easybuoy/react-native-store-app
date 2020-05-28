@@ -8,15 +8,13 @@ import Product from "../../models/products";
 
 export const deleteProduct = (productId) => async (dispatch) => {
   try {
-    console.log(productId)
-    const response = await fetch(
+    await fetch(
       `https://rn-store-4963f.firebaseio.com/products${productId}.json`,
       {
         method: "DELETE",
       }
     );
-    const responseData = await response.json();
-console.log(responseData)
+
     return dispatch({ type: DELETE_PRODUCT, productId });
   } catch (error) {
     throw error;
