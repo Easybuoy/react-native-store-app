@@ -1,4 +1,9 @@
-import { DELETE_PRODUCT, CREATE_PRODUCT, UPDATE_PRODUCT } from "../types";
+import {
+  DELETE_PRODUCT,
+  CREATE_PRODUCT,
+  UPDATE_PRODUCT,
+  GET_PRODUCTS,
+} from "../types";
 
 export const deleteProduct = (productId) => {
   return { type: DELETE_PRODUCT, productId };
@@ -36,7 +41,6 @@ export const createProduct = (title, description, imageUrl, price) => async (
       price,
     },
   });
-  
 };
 
 export const updateProduct = (id, title, description, imageUrl) => {
@@ -49,4 +53,20 @@ export const updateProduct = (id, title, description, imageUrl) => {
       imageUrl,
     },
   };
+};
+
+const fetchProducts = () => async (dispatch) => {
+  const response = await fetch(
+    "https://rn-store-4963f.firebaseio.com/products.json",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  const responseData = await response.json();
+
+  dispatch({ type: GET_PRODUCTS, products: responseData });
 };

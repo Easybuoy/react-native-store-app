@@ -1,4 +1,9 @@
-import { DELETE_PRODUCT, CREATE_PRODUCT, UPDATE_PRODUCT } from "../types";
+import {
+  DELETE_PRODUCT,
+  CREATE_PRODUCT,
+  UPDATE_PRODUCT,
+  GET_PRODUCTS,
+} from "../types";
 import PRODUCTS from "../../data/dummy-data";
 import Product from "../../models/products";
 
@@ -19,6 +24,12 @@ export default (state = INITIAL_STATE, action) => {
           (product) => product.id !== action.productId
         ),
       };
+    case GET_PRODUCTS: {
+      return {
+        ...state,
+        availableProducts: action.products,
+      };
+    }
     case CREATE_PRODUCT:
       const newProduct = new Product(
         action.productData.id,
