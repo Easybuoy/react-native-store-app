@@ -80,7 +80,7 @@ const AdminStack = () => {
       <Stack.Screen
         name="Products"
         component={Products}
-        options={({ navigation }) => {
+        options={({ navigation, route }) => {
           return {
             headerLeft: () => (
               <HeaderButtons HeaderButtonComponent={HeaderButton}>
@@ -110,6 +110,7 @@ const AdminStack = () => {
         name="Edit Product"
         component={EditProduct}
         options={({ route }) => {
+          console.log(route, '====rrrrs')
           const productId = route.params?.productId;
           const submitFn = route.params?.submitFn;
 

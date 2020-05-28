@@ -18,12 +18,12 @@ const formReducer = (state, action) => {
     case FORM_INPUT_UPDATE:
       const updatedValues = {
         ...state.inputValues,
-        [action.input]: [action.value],
+        [action.input]: action.value,
       };
 
       const updatedValidities = {
         ...state.inputValidities,
-        [action.input]: [action.isValid],
+        [action.input]: action.isValid,
       };
 
       let updatedFormIsValid = true;
@@ -64,29 +64,29 @@ const EditProduct = ({ route, navigation }) => {
     formIsValid: editedProduct ? true : false,
   });
 
+  console.log(formState, "fffstttt");
   const submitHandler = useCallback(() => {
     const { title, description, imageUrl, price } = formState.inputValues;
     if (!formState.formIsValid) {
       Alert.alert("Wrong Input", "Please check form errors", [{ text: "Ok" }]);
       return;
     }
-
     if (editedProduct) {
-      dispatch(updateProduct(productId, title, description, imageUrl, price));
+      dispatch(updateProduct(productId, title, description, imageUrl));
     } else {
-      dispatch(createProduct(productId, title, description, imageUrl, +price));
+      dispatch(createProduct(title, description, imageUrl, +price));
     }
+    console.log(navigation, "nnm");
     navigation.goBack();
   }, [dispatch, productId, formState]);
 
   useEffect(() => {
+    // console.log("nnnavvvv", navigation);
     navigation.setParams({ submitFn: submitHandler });
   }, [submitHandler]);
 
   const inputChangeHandler = useCallback(
     (inputIdentifier, inputValue, inputValidity) => {
-      let isValid = false;
-
       dispatchFormState({
         type: FORM_INPUT_UPDATE,
         value: inputValue,

@@ -20,7 +20,6 @@ export default (state = INITIAL_STATE, action) => {
         ),
       };
     case CREATE_PRODUCT:
-      console.log(action);
       const newProduct = new Product(
         new Date().toString(),
         "u1",
