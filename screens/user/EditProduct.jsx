@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer } from "react";
+import React, { useState, useCallback, useReducer } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 
 import {
@@ -43,6 +43,8 @@ const formReducer = (state, action) => {
 };
 
 const EditProduct = ({ route, navigation }) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(false)
   const productId = route.params?.productId;
 
   const editedProduct = useSelector((state) =>
