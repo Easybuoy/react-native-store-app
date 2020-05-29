@@ -8,13 +8,16 @@ import Product from "../../models/products";
 
 export const deleteProduct = (productId) => async (dispatch) => {
   try {
-    await fetch(
-      `https://rn-store-4963f.firebaseio.com/products${productId}.json`,
+    const response = await fetch(
+      `https://rn-store-4963f.firebaseio.com/products/${productId}.json`,
       {
         method: "DELETE",
       }
     );
 
+    if (!response.ok) {
+      throw new Error('Error deleting product')
+    }
     return dispatch({ type: DELETE_PRODUCT, productId });
   } catch (error) {
     throw error;
@@ -58,17 +61,24 @@ export const updateProduct = (id, title, description, imageUrl) => async (
   dispatch
 ) => {
   try {
-    await fetch(`https://rn-store-4963f.firebaseio.com/products${id}.json`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title,
-        description,
-        imageUrl,
-      }),
-    });
+    const response = await fetch(
+      `https://rn-store-4963f.firebaseio.com/products/${id}.json`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          imageUrl,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Error updating product");
+    }
 
     return dispatch({
       type: UPDATE_PRODUCT,
