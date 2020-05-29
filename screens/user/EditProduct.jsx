@@ -7,6 +7,8 @@ import {
   KeyboardAvoidingView,
   StyleSheet,
   Alert,
+  ActivityIndicator
+
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -43,8 +45,8 @@ const formReducer = (state, action) => {
 };
 
 const EditProduct = ({ route, navigation }) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
   const productId = route.params?.productId;
 
   const editedProduct = useSelector((state) =>
@@ -68,17 +70,25 @@ const EditProduct = ({ route, navigation }) => {
     formIsValid: editedProduct ? true : false,
   });
 
-  const submitHandler = useCallback(() => {
+  const submitHandler = useCallback(async () => {
+    setIsLoading(true);
     const { title, description, imageUrl, price } = formState.inputValues;
     if (!formState.formIsValid) {
       Alert.alert("Wrong Input", "Please check form errors", [{ text: "Ok" }]);
       return;
     }
-    if (editedProduct) {
-      dispatch(updateProduct(productId, title, description, imageUrl));
-    } else {
-      dispatch(createProduct(title, description, imageUrl, +price));
+    setError(null);
+    try {
+      if (editedProduct) {
+        await dispatch(updateProduct(productId, title, description, imageUrl));
+      } else {
+        await dispatch(createProduct(title, description, imageUrl, +price));
+      }
+    } catch (error) {
+      setError(error.message);
     }
+
+    setIsLoading(false);
 
     navigation.goBack();
   }, [dispatch, productId, formState]);
@@ -105,6 +115,10 @@ const EditProduct = ({ route, navigation }) => {
     },
     [dispatchFormState]
   );
+
+  if (isLoading) {
+    return <View><ActivityIndicator size="large" color/></View>
+  }
 
   return (
     <KeyboardAvoidingView
