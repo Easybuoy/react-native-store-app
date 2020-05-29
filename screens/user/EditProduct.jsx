@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useReducer } from "react";
+import React, { useState, useEffect, useCallback, useReducer } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 
 import {
@@ -69,6 +69,12 @@ const EditProduct = ({ route, navigation }) => {
     formIsValid: editedProduct ? true : false,
   });
 
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An error occured", error, [{ text: "Okay" }]);
+    }
+  }, [error]);
+
   const submitHandler = useCallback(async () => {
     setIsLoading(true);
     const { title, description, imageUrl, price } = formState.inputValues;
@@ -83,13 +89,12 @@ const EditProduct = ({ route, navigation }) => {
       } else {
         await dispatch(createProduct(title, description, imageUrl, +price));
       }
+      navigation.goBack();
     } catch (error) {
       setError(error.message);
     }
 
     setIsLoading(false);
-
-    navigation.goBack();
   }, [dispatch, productId, formState]);
 
   useFocusEffect(

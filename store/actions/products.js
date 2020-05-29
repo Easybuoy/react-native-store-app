@@ -16,7 +16,7 @@ export const deleteProduct = (productId) => async (dispatch) => {
     );
 
     if (!response.ok) {
-      throw new Error('Error deleting product')
+      throw new Error("Error deleting product");
     }
     return dispatch({ type: DELETE_PRODUCT, productId });
   } catch (error) {
