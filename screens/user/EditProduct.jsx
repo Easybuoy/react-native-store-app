@@ -7,11 +7,10 @@ import {
   KeyboardAvoidingView,
   StyleSheet,
   Alert,
-  ActivityIndicator
-
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
+import Spinner from "../../components/UI/Spinner";
 import Input from "../../components/UI/Input";
 import { createProduct, updateProduct } from "../../store/actions/products";
 
@@ -117,7 +116,7 @@ const EditProduct = ({ route, navigation }) => {
   );
 
   if (isLoading) {
-    return <View><ActivityIndicator size="large" color/></View>
+    return <Spinner />;
   }
 
   return (

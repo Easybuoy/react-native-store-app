@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
+import Spinner from "../../components/UI/Spinner";
 import Colors from "../../constants/Colors";
 import { addToCart } from "../../store/actions/cart";
 import ProductItem from "../../components/shop/ProductItem";
@@ -37,11 +38,14 @@ const ProductOverview = ({ navigation }) => {
   }, [dispatch, loadProducts]);
 
   useEffect(() => {
-    const willFocusSub = navigation.addListener("willFocus", () => loadProducts);
+    const willFocusSub = navigation.addListener(
+      "willFocus",
+      () => loadProducts
+    );
 
     return () => {
       // willFocusSub.remove()
-    }
+    };
   }, [loadProducts]);
 
   const selectHandler = (id, title) => {
@@ -65,11 +69,7 @@ const ProductOverview = ({ navigation }) => {
   }
 
   if (isLoading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.PRIMARY} />
-      </View>
-    );
+    return <Spinner />;
   }
 
   if (!isLoading && products.length === 0) {
