@@ -105,7 +105,7 @@ export const fetchProducts = () => async (dispatch) => {
         },
       }
     );
-
+ 
     if (!response.ok) {
       throw new Error("Something went wrong");
     }
