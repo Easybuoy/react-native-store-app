@@ -54,7 +54,7 @@ export const fetchOrders = () => {
       }
 
       const responseData = await response.json();
-      console.log(responseData)
+      
       const loadedOrders = [];
 
       for (const key in responseData) {
@@ -66,7 +66,9 @@ export const fetchOrders = () => {
         ));
       }
 
-      dispatch({ SET_ORDERS, orders: loadedOrders });
+      console.log(responseData)
+
+      dispatch({ type: SET_ORDERS, orders: loadedOrders });
     } catch (err) {
       throw err
     }
