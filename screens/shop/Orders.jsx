@@ -1,11 +1,16 @@
-import React from "react";
-import { View, FlatList, Text, StyleSheet } from "react-native";
-import { useSelector } from "react-redux";
-
+import React, { useEffect } from "react";
+import { FlatList, Text, StyleSheet } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 import OrderItem from "../../components/shop/OrderItem";
+import { fetchOrders } from "../../store/actions/orders";
 
 const Orders = () => {
   const orders = useSelector((state) => state.orders.orders);
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(fetchOrders());
+  }, [dispatch]);
 
   return (
     <FlatList
