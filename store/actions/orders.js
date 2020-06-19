@@ -66,8 +66,6 @@ export const fetchOrders = () => {
         ));
       }
 
-      console.log(responseData)
-
       dispatch({ type: SET_ORDERS, orders: loadedOrders });
     } catch (err) {
       throw err

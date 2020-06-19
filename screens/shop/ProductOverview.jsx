@@ -17,24 +17,26 @@ import { fetchProducts } from "../../store/actions/products";
 
 const ProductOverview = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState(false);
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products.availableProducts);
 
   const loadProducts = useCallback(async () => {
     setError(null);
+    setIsRefreshing(true);
     try {
       await dispatch(fetchProducts());
     } catch (error) {
       setError("Error occured");
     }
+    setIsRefreshing(false);
   }, [dispatch]);
 
   useEffect(() => {
     setIsLoading(true);
 
-    loadProducts();
-    setIsLoading(false);
+    loadProducts().then(() => setIsLoading(false));
   }, [dispatch, loadProducts]);
 
   useEffect(() => {
@@ -82,6 +84,8 @@ const ProductOverview = ({ navigation }) => {
 
   return (
     <FlatList
+      onRefresh={loadProducts}
+      refreshing={isRefreshing}
       data={products}
       renderItem={(itemData) => (
         <ProductItem
