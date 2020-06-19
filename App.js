@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
 
-import { MyDrawer } from "./navigation/Navigator";
+import { MyDrawer, AuthNavigator } from "./navigation/Navigator";
 import store from "./store";
 
 const fetchFonts = () => {
@@ -28,7 +28,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Provider store={store}>
-        <MyDrawer />
+        {/* <MyDrawer /> */}
+        <AuthNavigator />
       </Provider>
     </NavigationContainer>
   );

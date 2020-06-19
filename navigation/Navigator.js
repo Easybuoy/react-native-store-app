@@ -12,6 +12,7 @@ import Orders from "../screens/shop/Orders";
 import Cart from "../screens/shop/Cart";
 import Products from "../screens/user/Products";
 import EditProduct from "../screens/user/EditProduct";
+import Auth from "../screens/user/Auth";
 import Colors from "../constants/Colors";
 
 const Stack = createStackNavigator();
@@ -208,4 +209,12 @@ const MyDrawer = () => {
   );
 };
 
-export { MyDrawer };
+const AuthNavigator = () => {
+  return (
+    <Stack.Navigator screenOptions={screenOptionsStyle}>
+      <Stack.Screen name="Auth" component={Auth} />
+    </Stack.Navigator>
+  );
+};
+
+export { MyDrawer, AuthNavigator };
