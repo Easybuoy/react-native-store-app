@@ -212,7 +212,7 @@ const MyDrawer = () => {
 const AuthNavigator = () => {
   return (
     <Stack.Navigator screenOptions={screenOptionsStyle}>
-      <Stack.Screen name="Auth" component={Auth} />
+      <Stack.Screen name="Authenticate" component={Auth} />
     </Stack.Navigator>
   );
 };
