@@ -1,10 +1,12 @@
-import React, { useState, useReducer, useCallback } from "react";
+import React, { useState, useEffect, useReducer, useCallback } from "react";
 import {
   ScrollView,
   KeyboardAvoidingView,
   View,
   StyleSheet,
   Button,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch } from "react-redux";
@@ -12,7 +14,7 @@ import { useDispatch } from "react-redux";
 import Input from "../../components/UI/Input";
 import Card from "../../components/UI/Card";
 import Colors from "../../constants/Colors";
-import { signup } from "../../store/actions/auth";
+import { signup, login } from "../../store/actions/auth";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -45,6 +47,8 @@ const formReducer = (state, action) => {
 
 const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
+  const [error, setError] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
@@ -59,10 +63,28 @@ const Auth = () => {
     formIsValid: false,
   });
 
-  const signupHandler = () => {
-    dispatch(
-      signup(formState.inputValues.email, formState.inputValues.password)
-    );
+  const authHandler = async () => {
+    let action;
+    if (isSignUp) {
+      action = signup(
+        formState.inputValues.email,
+        formState.inputValues.password
+      );
+    } else {
+      action = login(
+        formState.inputValues.email,
+        formState.inputValues.password
+      );
+    }
+    setIsLoading(true);
+    setError(null);
+    try {
+      await dispatch(action);
+    } catch (error) {
+      setError(error);
+    }
+
+    setIsLoading(false);
   };
 
   const inputChangeHandler = useCallback(
@@ -76,6 +98,12 @@ const Auth = () => {
     },
     [dispatchFormState]
   );
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An error occured", error.message, [{ text: "Okay" }]);
+    }
+  }, [error]);
 
   return (
     <KeyboardAvoidingView
@@ -110,13 +138,17 @@ const Auth = () => {
               onInputChange={inputChangeHandler}
               initialValue=""
             />
-            <View style={styles.buttonContainer}>
-              <Button
-                title={isSignUp ? "Sign Up" : "Login"}
-                color={Colors.PRIMARY}
-                onPress={signupHandler}
-              />
-            </View>
+            {isLoading ? (
+              <ActivityIndicator size="small" color={Colors.PRIMARY} />
+            ) : (
+              <View style={styles.buttonContainer}>
+                <Button
+                  title={isSignUp ? "Sign Up" : "Login"}
+                  color={Colors.PRIMARY}
+                  onPress={authHandler}
+                />
+              </View>
+            )}
 
             <View style={styles.buttonContainer}>
               <Button
