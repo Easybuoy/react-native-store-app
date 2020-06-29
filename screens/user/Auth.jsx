@@ -1,4 +1,4 @@
-import React, { useReducer, useCallback } from "react";
+import React, { useState, useReducer, useCallback } from "react";
 import {
   ScrollView,
   KeyboardAvoidingView,
@@ -44,6 +44,7 @@ const formReducer = (state, action) => {
 };
 
 const Auth = () => {
+  const [isSignUp, setIsSignUp] = useState(false);
   const dispatch = useDispatch();
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
@@ -111,7 +112,7 @@ const Auth = () => {
             />
             <View style={styles.buttonContainer}>
               <Button
-                title="Login"
+                title={isSignUp ? "Sign Up" : "Login"}
                 color={Colors.PRIMARY}
                 onPress={signupHandler}
               />
@@ -119,9 +120,9 @@ const Auth = () => {
 
             <View style={styles.buttonContainer}>
               <Button
-                title="Switch to sign up"
+                title={`Switch to ${isSignUp ? "Login" : "Sign Up"}`}
                 color={Colors.SECONDARY}
-                onPress={() => {}}
+                onPress={() => setIsSignUp(!isSignUp)}
               />
             </View>
           </ScrollView>
