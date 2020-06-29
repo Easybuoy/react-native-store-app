@@ -45,7 +45,7 @@ const formReducer = (state, action) => {
   }
 };
 
-const Auth = () => {
+const Auth = ({ navigation }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -80,11 +80,12 @@ const Auth = () => {
     setError(null);
     try {
       await dispatch(action);
+
+      navigation.navigate("Product Overview");
     } catch (error) {
       setError(error);
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   const inputChangeHandler = useCallback(
@@ -100,6 +101,7 @@ const Auth = () => {
   );
 
   useEffect(() => {
+    setIsLoading(false);
     if (error) {
       Alert.alert("An error occured", error.message, [{ text: "Okay" }]);
     }

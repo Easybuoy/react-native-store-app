@@ -4,7 +4,7 @@ export const signup = (email, password) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=",
+        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAW-E4qcm4V9btF-60CKhVQCtgEgoaD7DM",
         {
           method: "POST",
           headers: {
@@ -33,9 +33,11 @@ export const signup = (email, password) => {
       console.log(resData);
       dispatch({
         type: SIGN_UP,
+        token: resData.idToken,
+        userId: resData.localId,
       });
     } catch (error) {
-      console.log(error, "err");
+      throw error;
     }
   };
 };
@@ -74,7 +76,9 @@ export const login = (email, password) => {
       const resData = await response.json();
       console.log(resData);
       dispatch({
-        type: SIGN_IN1,
+        type: SIGN_IN,
+        token: resData.idToken,
+        userId: resData.localId,
       });
     } catch (error) {
       console.log(error, "err");

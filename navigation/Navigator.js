@@ -2,6 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Platform } from "react-native";
+import { Provider, useSelector } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -16,6 +17,7 @@ import Auth from "../screens/user/Auth";
 import Colors from "../constants/Colors";
 
 const Stack = createStackNavigator();
+
 let screenOptionsStyle = {
   headerStyle: {
     backgroundColor: Platform.OS === "android" ? Colors.PRIMARY : "",
@@ -217,4 +219,10 @@ const AuthNavigator = () => {
   );
 };
 
-export { MyDrawer, AuthNavigator };
+const Navigator = () => {
+  const isSignedIn = useSelector((state) => state.auth.isSignedIn);
+  console.log(isSignedIn)
+  return <>{isSignedIn ? MyDrawer : AuthNavigator}</>;
+};
+
+export { MyDrawer, AuthNavigator, Navigator };

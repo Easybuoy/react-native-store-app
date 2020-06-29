@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
 
-import { MyDrawer, AuthNavigator } from "./navigation/Navigator";
+import { MyDrawer, AuthNavigator, Navigator } from "./navigation/Navigator";
 import store from "./store";
 
 const fetchFonts = () => {
@@ -26,11 +26,13 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Provider store={store}>
+    <Provider store={store}>
+      <NavigationContainer>
+        {/* {isSignedIn ? <MyDrawer /> : <AuthNavigator />} */}
         {/* <MyDrawer /> */}
-        <AuthNavigator />
-      </Provider>
-    </NavigationContainer>
+        {/* <AuthNavigator /> */}
+        <Navigator />
+      </NavigationContainer>
+    </Provider>
   );
 }
