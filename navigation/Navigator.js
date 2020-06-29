@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Platform } from "react-native";
@@ -15,6 +15,7 @@ import Products from "../screens/user/Products";
 import EditProduct from "../screens/user/EditProduct";
 import Auth from "../screens/user/Auth";
 import Colors from "../constants/Colors";
+import { AuthContext } from "../components/Context";
 
 const Stack = createStackNavigator();
 
@@ -137,6 +138,8 @@ const AdminStack = () => {
 };
 
 const OrderStack = () => {
+  const { signOut } = useContext(AuthContext);
+
   return (
     <Stack.Navigator screenOptions={screenOptionsStyle}>
       <Stack.Screen
@@ -150,6 +153,17 @@ const OrderStack = () => {
                   title="Cart"
                   iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
                   onPress={() => navigation.toggleDrawer()}
+                />
+              </HeaderButtons>
+            ),
+            headerRight: () => (
+              <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                <Item
+                  title="Cart"
+                  iconName={
+                    Platform.OS === "android" ? "md-log-out" : "ios-log-out"
+                  }
+                  onPress={signOut}
                 />
               </HeaderButtons>
             ),
@@ -219,10 +233,4 @@ const AuthNavigator = () => {
   );
 };
 
-const Navigator = () => {
-  const isSignedIn = useSelector((state) => state.auth.isSignedIn);
-  console.log(isSignedIn)
-  return <>{isSignedIn ? MyDrawer : AuthNavigator}</>;
-};
-
-export { MyDrawer, AuthNavigator, Navigator };
+export { MyDrawer, AuthNavigator };

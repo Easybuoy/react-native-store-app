@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useReducer, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useReducer,
+  useCallback,
+  useContext,
+} from "react";
 import {
   ScrollView,
   KeyboardAvoidingView,
@@ -15,6 +21,7 @@ import Input from "../../components/UI/Input";
 import Card from "../../components/UI/Card";
 import Colors from "../../constants/Colors";
 import { signup, login } from "../../store/actions/auth";
+import { AuthContext } from "../../components/Context";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -49,6 +56,7 @@ const Auth = ({ navigation }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const { signIn } = useContext(AuthContext);
   const dispatch = useDispatch();
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
@@ -65,24 +73,27 @@ const Auth = ({ navigation }) => {
 
   const authHandler = async () => {
     let action;
-    if (isSignUp) {
-      action = signup(
-        formState.inputValues.email,
-        formState.inputValues.password
-      );
-    } else {
-      action = login(
-        formState.inputValues.email,
-        formState.inputValues.password
-      );
-    }
+    // if (isSignUp) {
+    //   action = signup(
+    //     formState.inputValues.email,
+    //     formState.inputValues.password
+    //   );
+    // } else {
+    //   action = login(
+    //     formState.inputValues.email,
+    //     formState.inputValues.password
+    //   );
+    // }
     setIsLoading(true);
     setError(null);
     try {
-      await dispatch(action);
-
-      navigation.navigate("Product Overview");
+      console.log("fired");
+      await signIn(formState.inputValues.email, formState.inputValues.password);
+      // await dispatch(action);
+      // signIn()
+      // navigation.navigate("Product Overview");
     } catch (error) {
+      console.log(error, 'eeeee');
       setError(error);
       setIsLoading(false);
     }
