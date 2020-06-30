@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Provider, useSelector } from "react-redux";
 import { AuthContext } from "./components/Context";
 import { NavigationContainer } from "@react-navigation/native";
-import { Text } from "react-native";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
+import AsyncStorage from "@react-native-community/async-storage";
 
-import { MyDrawer, AuthNavigator, Navigator } from "./navigation/Navigator";
+import { MyDrawer, AuthNavigator } from "./navigation/Navigator";
 import store from "./store";
 
 const fetchFonts = () => {
@@ -15,10 +15,27 @@ const fetchFonts = () => {
     "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
   });
 };
+
 export default function App() {
-  // const [userToken, setUserToken] = useState(null);
   const [fontLoaded, setFontLoaded] = useState(false);
-  // console.log(userToken)
+
+  useEffect(() => {
+    const fetchUserToken = async () => {
+      let token;
+      try {
+        token = await AsyncStorage.getItem("userToken");
+      } catch (error) {
+        console.log("error", error);
+      }
+
+      dispatch({
+        type: "RESTORE_TOKEN",
+        token,
+      });
+    };
+
+    fetchUserToken();
+  }, []);
 
   const INITIAL_STATE = {
     isLoading: true,
@@ -55,6 +72,7 @@ export default function App() {
   };
 
   const [loginState, dispatch] = React.useReducer(loginReducer, INITIAL_STATE);
+
   const authContext = React.useMemo(() => ({
     signIn: async (email, password) => {
       console.log("aa");
@@ -91,6 +109,7 @@ export default function App() {
 
         const resData = await response.json();
         console.log(resData);
+        await AsyncStorage.setItem("userToken", resData.idToken);
         dispatch({
           type: "SIGN_IN",
           token: resData.idToken,
@@ -100,27 +119,21 @@ export default function App() {
         throw error;
       }
     },
-    signOut: () => {
-      console.log("ye");
-      dispatch({
-        type: "LOGOUT",
-      });
+    signOut: async () => {
+      try {
+        await AsyncStorage.removeItem("userToken");
+        dispatch({
+          type: "LOGOUT",
+        });
+      } catch (error) {
+        console.log(error);
+      }
     },
     signUp: () => {
       setUserToken("aaaa");
       setIsLoading(false);
     },
   }));
-
-  useEffect(() => {
-    setTimeout(() => {
-      //
-      dispatch({
-        type: "RESTORE_TOKEN",
-        token: "resData.idToken",
-      });
-    }, 1000);
-  }, []);
 
   if (!fontLoaded) {
     return (
@@ -131,21 +144,13 @@ export default function App() {
     );
   }
 
-  if (loginState.isLoading) {
-    return <Text>Loading</Text>;
-  }
-
   return (
     <AuthContext.Provider value={authContext}>
-      <Provider store={store}>
-        <NavigationContainer>
+      <NavigationContainer>
+        <Provider store={store}>
           {loginState.userToken !== null ? <MyDrawer /> : <AuthNavigator />}
-          {/* {isSignedIn ? <MyDrawer /> : <AuthNavigator />} */}
-          {/* <MyDrawer /> */}
-          {/* <AuthNavigator /> */}
-          {/* <Navigator /> */}
-        </NavigationContainer>
-      </Provider>
+        </Provider>
+      </NavigationContainer>
     </AuthContext.Provider>
   );
 }
