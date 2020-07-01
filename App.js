@@ -4,10 +4,11 @@ import { AuthContext } from "./components/Context";
 import { NavigationContainer } from "@react-navigation/native";
 import { AppLoading } from "expo";
 import { API_KEY } from "react-native-dotenv";
+import { Alert } from "react-native";
 import * as Font from "expo-font";
 import AsyncStorage from "@react-native-community/async-storage";
 
-import { SIGN_IN, SIGN_UP } from "./store/types";
+import { SIGN_IN, SIGN_UP, RESTORE_TOKEN, LOGOUT } from "./store/types";
 import { MyDrawer, AuthNavigator } from "./navigation/Navigator";
 import store from "./store";
 
@@ -27,11 +28,11 @@ export default function App() {
       try {
         token = await AsyncStorage.getItem("userToken");
       } catch (error) {
-        console.log("error", error);
+        token = null;
       }
 
       dispatch({
-        type: "RESTORE_TOKEN",
+        type: RESTORE_TOKEN,
         token,
       });
     };
@@ -42,32 +43,36 @@ export default function App() {
   const INITIAL_STATE = {
     isLoading: true,
     userToken: null,
+    userId: null,
   };
 
   const loginReducer = (prevState, action) => {
     switch (action.type) {
-      case "RESTORE_TOKEN":
+      case RESTORE_TOKEN:
         return {
           ...prevState,
           userToken: action.token,
           isLoading: false,
         };
-      case "SIGN_UP":
+      case SIGN_UP:
         return {
           ...prevState,
           userToken: action.token,
+          userId: action.userId,
           isLoading: false,
         };
       case SIGN_IN:
         return {
           ...prevState,
           userToken: action.token,
+          userId: action.userId,
           isLoading: false,
         };
-      case "LOGOUT":
+      case LOGOUT:
         return {
           ...prevState,
           userToken: null,
+          userId: null,
           isLoading: false,
         };
     }
@@ -110,7 +115,7 @@ export default function App() {
 
         await AsyncStorage.setItem("userToken", resData.idToken);
         dispatch({
-          type: "SIGN_IN",
+          type: SIGN_IN,
           token: resData.idToken,
           userId: resData.localId,
         });
@@ -122,10 +127,12 @@ export default function App() {
       try {
         await AsyncStorage.removeItem("userToken");
         dispatch({
-          type: "LOGOUT",
+          type: LOGOUT,
         });
       } catch (error) {
-        console.log(error);
+        Alert.alert("An error occured", "Unable to Logout", [
+          { text: "Cancel" },
+        ]);
       }
     },
     signUp: async (email, password) => {
@@ -157,7 +164,8 @@ export default function App() {
         }
 
         const resData = await response.json();
-        console.log(resData);
+        await AsyncStorage.setItem("userToken", resData.idToken);
+
         dispatch({
           type: SIGN_UP,
           token: resData.idToken,
@@ -166,8 +174,6 @@ export default function App() {
       } catch (error) {
         throw error;
       }
-      setUserToken("aaaa");
-      setIsLoading(false);
     },
   }));
 

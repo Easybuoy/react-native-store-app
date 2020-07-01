@@ -56,7 +56,7 @@ const Auth = ({ navigation }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const { signIn } = useContext(AuthContext);
+  const { signIn, signUp } = useContext(AuthContext);
   const dispatch = useDispatch();
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
@@ -73,27 +73,16 @@ const Auth = ({ navigation }) => {
 
   const authHandler = async () => {
     let action;
-    // if (isSignUp) {
-    //   action = signup(
-    //     formState.inputValues.email,
-    //     formState.inputValues.password
-    //   );
-    // } else {
-    //   action = login(
-    //     formState.inputValues.email,
-    //     formState.inputValues.password
-    //   );
-    // }
+    if (isSignUp) {
+      action = signUp;
+    } else {
+      action = signIn;
+    }
     setIsLoading(true);
     setError(null);
     try {
-      console.log("fired");
-      await signIn(formState.inputValues.email, formState.inputValues.password);
-      // await dispatch(action);
-      // signIn()
-      // navigation.navigate("Product Overview");
+      await action(formState.inputValues.email, formState.inputValues.password);
     } catch (error) {
-      console.log(error, 'eeeee');
       setError(error);
       setIsLoading(false);
     }
