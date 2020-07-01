@@ -3,6 +3,7 @@ import { Provider, useSelector } from "react-redux";
 import { AuthContext } from "./components/Context";
 import { NavigationContainer } from "@react-navigation/native";
 import { AppLoading } from "expo";
+import { API_KEY } from "react-native-dotenv";
 import * as Font from "expo-font";
 import AsyncStorage from "@react-native-community/async-storage";
 
@@ -15,6 +16,7 @@ const fetchFonts = () => {
     "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
   });
 };
+
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -75,12 +77,9 @@ export default function App() {
 
   const authContext = React.useMemo(() => ({
     signIn: async (email, password) => {
-      console.log("aa");
-      // setUserToken("aaaa");
-      // setIsLoading(false);
       try {
         const response = await fetch(
-          "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAW-E4qcm4V9btF-60CKhVQCtgEgoaD7DM",
+          `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`,
           {
             method: "POST",
             headers: {

@@ -1,10 +1,12 @@
+import { API_KEY } from "react-native-dotenv";
+
 import { SIGN_UP, SIGN_IN } from "../types";
 
 export const signup = (email, password) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAW-E4qcm4V9btF-60CKhVQCtgEgoaD7DM",
+        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`,
         {
           method: "POST",
           headers: {
@@ -46,7 +48,7 @@ export const login = (email, password) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAW-E4qcm4V9btF-60CKhVQCtgEgoaD7DM",
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`,
         {
           method: "POST",
           headers: {
