@@ -7,6 +7,7 @@ import { API_KEY } from "react-native-dotenv";
 import * as Font from "expo-font";
 import AsyncStorage from "@react-native-community/async-storage";
 
+import { SIGN_IN, SIGN_UP } from "./store/types";
 import { MyDrawer, AuthNavigator } from "./navigation/Navigator";
 import store from "./store";
 
@@ -16,7 +17,6 @@ const fetchFonts = () => {
     "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
   });
 };
-
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -58,7 +58,7 @@ export default function App() {
           userToken: action.token,
           isLoading: false,
         };
-      case "SIGN_IN":
+      case SIGN_IN:
         return {
           ...prevState,
           userToken: action.token,
@@ -107,7 +107,7 @@ export default function App() {
         }
 
         const resData = await response.json();
-        console.log(resData);
+
         await AsyncStorage.setItem("userToken", resData.idToken);
         dispatch({
           type: "SIGN_IN",
@@ -128,7 +128,44 @@ export default function App() {
         console.log(error);
       }
     },
-    signUp: () => {
+    signUp: async (email, password) => {
+      try {
+        const response = await fetch(
+          `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email,
+              password,
+              returnSecureToken: true,
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          const errorResponse = await response.json();
+
+          const errorId = errorResponse.error.message;
+          let message = "Something went wrong";
+          if (errorId === "EMAIL_EXISTS") {
+            message = "Email Exists Already";
+          }
+          throw new Error(message);
+        }
+
+        const resData = await response.json();
+        console.log(resData);
+        dispatch({
+          type: SIGN_UP,
+          token: resData.idToken,
+          userId: resData.localId,
+        });
+      } catch (error) {
+        throw error;
+      }
       setUserToken("aaaa");
       setIsLoading(false);
     },
