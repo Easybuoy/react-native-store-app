@@ -8,6 +8,8 @@ import { Alert } from "react-native";
 import * as Font from "expo-font";
 import AsyncStorage from "@react-native-community/async-storage";
 
+import { INITIAL_STATE, authReducer } from "./store/reducers/auth";
+
 import { SIGN_IN, SIGN_UP, RESTORE_TOKEN, LOGOUT } from "./store/types";
 import { MyDrawer, AuthNavigator } from "./navigation/Navigator";
 import store from "./store";
@@ -21,6 +23,7 @@ const fetchFonts = () => {
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
+  const [loginState, dispatch] = React.useReducer(authReducer, INITIAL_STATE);
 
   useEffect(() => {
     const fetchUserToken = async () => {
@@ -39,46 +42,6 @@ export default function App() {
 
     fetchUserToken();
   }, []);
-
-  const INITIAL_STATE = {
-    isLoading: true,
-    userToken: null,
-    userId: null,
-  };
-
-  const loginReducer = (prevState, action) => {
-    switch (action.type) {
-      case RESTORE_TOKEN:
-        return {
-          ...prevState,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case SIGN_UP:
-        return {
-          ...prevState,
-          userToken: action.token,
-          userId: action.userId,
-          isLoading: false,
-        };
-      case SIGN_IN:
-        return {
-          ...prevState,
-          userToken: action.token,
-          userId: action.userId,
-          isLoading: false,
-        };
-      case LOGOUT:
-        return {
-          ...prevState,
-          userToken: null,
-          userId: null,
-          isLoading: false,
-        };
-    }
-  };
-
-  const [loginState, dispatch] = React.useReducer(loginReducer, INITIAL_STATE);
 
   const authContext = React.useMemo(() => ({
     signIn: async (email, password) => {

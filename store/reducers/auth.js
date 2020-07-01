@@ -1,25 +1,41 @@
-import { SIGN_IN, SIGN_UP } from "../types";
+import { SIGN_IN, SIGN_UP, RESTORE_TOKEN, LOGOUT } from "../types";
+
 const INITIAL_STATE = {
-  token: null,
+  isLoading: true,
+  userToken: null,
   userId: null,
-  isSignedIn: false
 };
 
-export default (state = INITIAL_STATE, action) => {
+const authReducer = (prevState, action) => {
   switch (action.type) {
+    case RESTORE_TOKEN:
+      return {
+        ...prevState,
+        userToken: action.token,
+        isLoading: false,
+      };
     case SIGN_UP:
       return {
-        token: action.token,
+        ...prevState,
+        userToken: action.token,
         userId: action.userId,
-        isSignedIn: true
+        isLoading: false,
       };
     case SIGN_IN:
       return {
-        token: action.token,
+        ...prevState,
+        userToken: action.token,
         userId: action.userId,
-        isSignedIn: true
+        isLoading: false,
       };
-    default:
-      return state;
+    case LOGOUT:
+      return {
+        ...prevState,
+        userToken: null,
+        userId: null,
+        isLoading: false,
+      };
   }
 };
+
+export { INITIAL_STATE, authReducer };
