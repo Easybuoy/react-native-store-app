@@ -1,3 +1,5 @@
+import AsyncStorage from "@react-native-community/async-storage";
+
 import {
   DELETE_PRODUCT,
   CREATE_PRODUCT,
@@ -7,9 +9,11 @@ import {
 import Product from "../../models/products";
 
 export const deleteProduct = (productId) => async (dispatch) => {
+  const token = await AsyncStorage.getItem("userToken");
+
   try {
     const response = await fetch(
-      `https://rn-store-4963f.firebaseio.com/products/${productId}.json`,
+      `https://rn-store-4963f.firebaseio.com/products/${productId}.json?auth=${token}`,
       {
         method: "DELETE",
       }
@@ -27,8 +31,10 @@ export const deleteProduct = (productId) => async (dispatch) => {
 export const createProduct = (title, description, imageUrl, price) => async (
   dispatch
 ) => {
+  const token = await AsyncStorage.getItem("userToken");
+
   const response = await fetch(
-    "https://rn-store-4963f.firebaseio.com/products.json",
+    `https://rn-store-4963f.firebaseio.com/products.json?auth=${token}`,
     {
       method: "POST",
       headers: {
@@ -61,8 +67,9 @@ export const updateProduct = (id, title, description, imageUrl) => async (
   dispatch
 ) => {
   try {
+    const token = await AsyncStorage.getItem("userToken");
     const response = await fetch(
-      `https://rn-store-4963f.firebaseio.com/products/${id}.json`,
+      `https://rn-store-4963f.firebaseio.com/products/${id}.json?auth=${token}`,
       {
         method: "PATCH",
         headers: {
@@ -105,7 +112,7 @@ export const fetchProducts = () => async (dispatch) => {
         },
       }
     );
- 
+
     if (!response.ok) {
       throw new Error("Something went wrong");
     }
