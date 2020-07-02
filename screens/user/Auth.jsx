@@ -21,7 +21,6 @@ import Input from "../../components/UI/Input";
 import Card from "../../components/UI/Card";
 import Colors from "../../constants/Colors";
 import { signup, login } from "../../store/actions/auth";
-import { AuthContext } from "../../components/Context";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -73,8 +72,9 @@ const Auth = ({ navigation }) => {
 
   const authHandler = async () => {
     let action;
+
     if (isSignUp) {
-      action = login;
+      action = signup;
     } else {
       action = login;
     }

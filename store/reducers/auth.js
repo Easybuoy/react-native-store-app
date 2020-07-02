@@ -7,8 +7,6 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
-  console.log("===========");
-  // console.log(state, "state");
   switch (action.type) {
     case RESTORE_TOKEN:
       return {
@@ -25,7 +23,6 @@ export default (state = INITIAL_STATE, action) => {
         isLoading: false,
       };
     case SIGN_IN:
-      console.log("signing in");
       return {
         ...state,
         userToken: action.userToken,
@@ -33,7 +30,6 @@ export default (state = INITIAL_STATE, action) => {
         isLoading: false,
       };
     case LOGOUT:
-      console.log("logging out");
       return {
         ...state,
         userToken: null,
