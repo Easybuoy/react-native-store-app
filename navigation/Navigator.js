@@ -15,7 +15,7 @@ import Products from "../screens/user/Products";
 import EditProduct from "../screens/user/EditProduct";
 import Auth from "../screens/user/Auth";
 import Colors from "../constants/Colors";
-// import { AuthContext } from "../components/Context";
+
 import { logout } from "../store/actions/auth";
 import { useDispatch } from "react-redux";
 
