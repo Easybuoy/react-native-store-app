@@ -1,7 +1,10 @@
 import React, { useContext } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { Platform } from "react-native";
+import {
+  createDrawerNavigator,
+  DrawerItemList,
+} from "@react-navigation/drawer";
+import { Platform, SafeAreaView, Button, View } from "react-native";
 import { Provider, useSelector } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { Ionicons } from "@expo/vector-icons";
@@ -158,17 +161,17 @@ const OrderStack = () => {
                 />
               </HeaderButtons>
             ),
-            headerRight: () => (
-              <HeaderButtons HeaderButtonComponent={HeaderButton}>
-                <Item
-                  title="Cart"
-                  iconName={
-                    Platform.OS === "android" ? "md-log-out" : "ios-log-out"
-                  }
-                  onPress={() => dispatch(logout())}
-                />
-              </HeaderButtons>
-            ),
+            // headerRight: () => (
+            //   <HeaderButtons HeaderButtonComponent={HeaderButton}>
+            //     <Item
+            //       title="Cart"
+            //       iconName={
+            //         Platform.OS === "android" ? "md-log-out" : "ios-log-out"
+            //       }
+            //       onPress={() => dispatch(logout())}
+            //     />
+            //   </HeaderButtons>
+            // ),
           };
         }}
       />
@@ -179,10 +182,27 @@ const OrderStack = () => {
 const Drawer = createDrawerNavigator();
 
 const MyDrawer = () => {
+  const dispatch = useDispatch();
+
   return (
     <Drawer.Navigator
       initialRouteName="Products"
       drawerContentOptions={{ activeTintColor: Colors.PRIMARY }}
+      drawerContent={(props) => {
+        console.log(props);
+        return (
+          <View style={{ flex: 1 }}>
+            <SafeAreaView forceInset={{ top: "always", horizontal: "never" }}>
+              <DrawerItemList {...props} />
+              <Button
+                title="Logout"
+                color={Colors.PRIMARY}
+                onPress={() => dispatch(logout())}
+              />
+            </SafeAreaView>
+          </View>
+        );
+      }}
     >
       <Drawer.Screen
         name="Products"
@@ -236,4 +256,3 @@ const AuthNavigator = () => {
 };
 
 export { MyDrawer, AuthNavigator };
-
