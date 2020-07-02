@@ -6,36 +6,41 @@ const INITIAL_STATE = {
   userId: null,
 };
 
-const authReducer = (prevState, action) => {
+export default (state = INITIAL_STATE, action) => {
+  console.log("===========");
+  // console.log(state, "state");
   switch (action.type) {
     case RESTORE_TOKEN:
       return {
-        ...prevState,
-        userToken: action.token,
+        ...state,
+        userToken: action.userToken,
+        userId: action.userId,
         isLoading: false,
       };
     case SIGN_UP:
       return {
-        ...prevState,
-        userToken: action.token,
+        ...state,
+        userToken: action.userToken,
         userId: action.userId,
         isLoading: false,
       };
     case SIGN_IN:
+      console.log("signing in");
       return {
-        ...prevState,
-        userToken: action.token,
+        ...state,
+        userToken: action.userToken,
         userId: action.userId,
         isLoading: false,
       };
     case LOGOUT:
+      console.log("logging out");
       return {
-        ...prevState,
+        ...state,
         userToken: null,
         userId: null,
         isLoading: false,
       };
+    default:
+      return state;
   }
 };
-
-export { INITIAL_STATE, authReducer };

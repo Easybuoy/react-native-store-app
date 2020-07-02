@@ -64,8 +64,9 @@ export const createProduct = (title, description, imageUrl, price) => async (
 };
 
 export const updateProduct = (id, title, description, imageUrl) => async (
-  dispatch
+  dispatch, getState
 ) => {
+  console.log(getState().auth)
   try {
     const token = await AsyncStorage.getItem("userToken");
     const response = await fetch(

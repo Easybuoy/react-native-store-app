@@ -15,7 +15,9 @@ import Products from "../screens/user/Products";
 import EditProduct from "../screens/user/EditProduct";
 import Auth from "../screens/user/Auth";
 import Colors from "../constants/Colors";
-import { AuthContext } from "../components/Context";
+// import { AuthContext } from "../components/Context";
+import { logout } from "../store/actions/auth";
+import { useDispatch } from "react-redux";
 
 const Stack = createStackNavigator();
 
@@ -138,8 +140,8 @@ const AdminStack = () => {
 };
 
 const OrderStack = () => {
-  const { signOut } = useContext(AuthContext);
-
+  // const { signOut } = useContext(AuthContext);
+  const dispatch = useDispatch();
   return (
     <Stack.Navigator screenOptions={screenOptionsStyle}>
       <Stack.Screen
@@ -163,7 +165,7 @@ const OrderStack = () => {
                   iconName={
                     Platform.OS === "android" ? "md-log-out" : "ios-log-out"
                   }
-                  onPress={signOut}
+                  onPress={() => dispatch(logout())}
                 />
               </HeaderButtons>
             ),

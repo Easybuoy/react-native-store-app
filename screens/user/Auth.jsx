@@ -56,7 +56,7 @@ const Auth = ({ navigation }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const { signIn, signUp } = useContext(AuthContext);
+  // const { signIn, signUp } = useContext(AuthContext);
   const dispatch = useDispatch();
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
@@ -74,14 +74,16 @@ const Auth = ({ navigation }) => {
   const authHandler = async () => {
     let action;
     if (isSignUp) {
-      action = signUp;
+      action = login;
     } else {
-      action = signIn;
+      action = login;
     }
     setIsLoading(true);
     setError(null);
     try {
-      await action(formState.inputValues.email, formState.inputValues.password);
+      await dispatch(
+        action(formState.inputValues.email, formState.inputValues.password)
+      );
     } catch (error) {
       setError(error);
       setIsLoading(false);
