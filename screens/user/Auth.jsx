@@ -55,7 +55,6 @@ const Auth = ({ navigation }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  // const { signIn, signUp } = useContext(AuthContext);
   const dispatch = useDispatch();
 
   const [formState, dispatchFormState] = useReducer(formReducer, {

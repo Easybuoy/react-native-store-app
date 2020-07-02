@@ -1,5 +1,3 @@
-import AsyncStorage from "@react-native-community/async-storage";
-
 import {
   DELETE_PRODUCT,
   CREATE_PRODUCT,
@@ -8,12 +6,12 @@ import {
 } from "../types";
 import Product from "../../models/products";
 
-export const deleteProduct = (productId) => async (dispatch) => {
-  const token = await AsyncStorage.getItem("userToken");
+export const deleteProduct = (productId) => async (dispatch, getState) => {
+  const { userToken } = getState().auth;
 
   try {
     const response = await fetch(
-      `https://rn-store-4963f.firebaseio.com/products/${productId}.json?auth=${token}`,
+      `https://rn-store-4963f.firebaseio.com/products/${productId}.json?auth=${userToken}`,
       {
         method: "DELETE",
       }
@@ -29,12 +27,13 @@ export const deleteProduct = (productId) => async (dispatch) => {
 };
 
 export const createProduct = (title, description, imageUrl, price) => async (
-  dispatch
+  dispatch,
+  getState
 ) => {
-  const token = await AsyncStorage.getItem("userToken");
+  const { userId, userToken } = getState().auth;
 
   const response = await fetch(
-    `https://rn-store-4963f.firebaseio.com/products.json?auth=${token}`,
+    `https://rn-store-4963f.firebaseio.com/products.json?auth=${userToken}`,
     {
       method: "POST",
       headers: {
@@ -45,6 +44,7 @@ export const createProduct = (title, description, imageUrl, price) => async (
         description,
         imageUrl,
         price,
+        ownerId: userId
       }),
     }
   );
@@ -64,13 +64,14 @@ export const createProduct = (title, description, imageUrl, price) => async (
 };
 
 export const updateProduct = (id, title, description, imageUrl) => async (
-  dispatch, getState
+  dispatch,
+  getState
 ) => {
-  console.log(getState().auth)
   try {
-    const token = await AsyncStorage.getItem("userToken");
+    const { userId, userToken } = getState().auth;
+
     const response = await fetch(
-      `https://rn-store-4963f.firebaseio.com/products/${id}.json?auth=${token}`,
+      `https://rn-store-4963f.firebaseio.com/products/${id}.json?auth=${userToken}`,
       {
         method: "PATCH",
         headers: {
