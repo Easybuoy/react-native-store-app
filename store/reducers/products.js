@@ -27,13 +27,13 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         availableProducts: action.products,
-        userProducts: action.products,
+        userProducts: action.userProducts,
       };
     }
     case CREATE_PRODUCT:
       const newProduct = new Product(
         action.productData.id,
-        "u1",
+        action.productData.ownerId,
         action.productData.title,
         action.productData.imageUrl,
         action.productData.description,

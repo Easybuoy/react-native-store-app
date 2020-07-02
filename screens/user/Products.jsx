@@ -1,7 +1,7 @@
 import React from "react";
 import { FlatList, Button } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { Alert } from "react-native";
+import { Alert, View, Text } from "react-native";
 
 import Colors from "../../constants/Colors";
 import { deleteProduct } from "../../store/actions/products";
@@ -29,6 +29,14 @@ const Products = ({ navigation }) => {
       },
     ]);
   };
+
+  if (userProducts.length === 0) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>No products found, create one now </Text>
+      </View>
+    );
+  }
 
   return (
     <FlatList

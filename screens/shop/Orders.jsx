@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, ActivityIndicator, View, StyleSheet } from "react-native";
+import {
+  FlatList,
+  ActivityIndicator,
+  View,
+  Text,
+  StyleSheet,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import OrderItem from "../../components/shop/OrderItem";
 import { fetchOrders } from "../../store/actions/orders";
@@ -22,6 +28,15 @@ const Orders = () => {
       </View>
     );
   }
+
+  if (orders.length === 0) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>No orders found, order a product now </Text>
+      </View>
+    );
+  }
+
   return (
     <FlatList
       data={orders}

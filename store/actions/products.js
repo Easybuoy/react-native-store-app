@@ -44,7 +44,7 @@ export const createProduct = (title, description, imageUrl, price) => async (
         description,
         imageUrl,
         price,
-        ownerId: userId
+        ownerId: userId,
       }),
     }
   );
@@ -59,6 +59,7 @@ export const createProduct = (title, description, imageUrl, price) => async (
       description,
       imageUrl,
       price,
+      ownerId: userId,
     },
   });
 };
@@ -68,7 +69,7 @@ export const updateProduct = (id, title, description, imageUrl) => async (
   getState
 ) => {
   try {
-    const { userId, userToken } = getState().auth;
+    const { userToken } = getState().auth;
 
     const response = await fetch(
       `https://rn-store-4963f.firebaseio.com/products/${id}.json?auth=${userToken}`,
@@ -103,8 +104,10 @@ export const updateProduct = (id, title, description, imageUrl) => async (
   }
 };
 
-export const fetchProducts = () => async (dispatch) => {
+export const fetchProducts = () => async (dispatch, getState) => {
   try {
+    const { userId } = getState().auth;
+
     const response = await fetch(
       "https://rn-store-4963f.firebaseio.com/products.json",
       {
@@ -136,7 +139,13 @@ export const fetchProducts = () => async (dispatch) => {
       );
     }
 
-    dispatch({ type: GET_PRODUCTS, products: loadedProducts });
+    dispatch({
+      type: GET_PRODUCTS,
+      products: loadedProducts,
+      userProducts: loadedProducts.filter(
+        (product) => product.ownerId === userId
+      ),
+    });
   } catch (error) {
     throw error;
   }
