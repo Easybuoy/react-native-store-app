@@ -189,16 +189,18 @@ const MyDrawer = () => {
       initialRouteName="Products"
       drawerContentOptions={{ activeTintColor: Colors.PRIMARY }}
       drawerContent={(props) => {
-        console.log(props);
+
         return (
           <View style={{ flex: 1 }}>
             <SafeAreaView forceInset={{ top: "always", horizontal: "never" }}>
               <DrawerItemList {...props} />
-              <Button
-                title="Logout"
-                color={Colors.PRIMARY}
-                onPress={() => dispatch(logout())}
-              />
+              <View style={{ marginHorizontal: 10 }}>
+                <Button
+                  title="Logout"
+                  color={Colors.PRIMARY}
+                  onPress={() => dispatch(logout())}
+                />
+              </View>
             </SafeAreaView>
           </View>
         );
